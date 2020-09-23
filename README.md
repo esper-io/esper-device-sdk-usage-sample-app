@@ -1,4 +1,4 @@
-# EsperSampleDeviceSDKApp
+# Esper Device SDK Usage Sample App
 EsperSampleDeviceSDKApp
 #
 Demonstartion of explored APIs available in Esper Device SDK can be done using this app.
