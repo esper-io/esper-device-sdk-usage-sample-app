@@ -85,4 +85,28 @@ object SampleJsonStringProvider {
 
         return jsonObject.toString()
     }
+
+    @JvmStatic
+    fun getSampleNoNetworkFallbackConfigJsonString(): String {
+        val networkFallbackEnabledKey = "networkFallbackEnabled"
+        val fallbackDurationFlightModeOnKey = "fallbackDurationFlightModeOn"
+        val fallbackDurationOffKey = "fallbackDurationOff"
+        val fallbackDurationRebootKey = "fallbackDurationReboot"
+        val maxResetsInDayKey = "maxResetsInDay"
+        val networkFallbackActionKey = "networkFallbackAction"
+
+        val jsonObject = JSONObject()
+        try {
+            jsonObject.put(networkFallbackEnabledKey, true)
+            jsonObject.put(fallbackDurationFlightModeOnKey, 30000)
+            jsonObject.put(fallbackDurationOffKey, 30000)
+            jsonObject.put(fallbackDurationRebootKey, 60000)
+            jsonObject.put(maxResetsInDayKey, 3)
+            jsonObject.put(networkFallbackActionKey, 3)
+        } catch (jsonException: JSONException) {
+            Log.e(TAG, "getDummyNoNetworkFallbackConfigJsonString(): ", jsonException)
+        }
+
+        return jsonObject.toString()
+    }
 }
