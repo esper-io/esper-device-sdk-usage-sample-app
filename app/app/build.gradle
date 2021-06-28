@@ -39,12 +39,20 @@ android {
 }
 
 dependencies {
-
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.core:core-ktx:$core_ktx_version"
+
     implementation "androidx.appcompat:appcompat:$app_compat_version"
+
+    // Material
     implementation "com.google.android.material:material:$material_version"
+
+    // Constraint Layout
     implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
+
+    // Esper SDK
+    implementation "io.esper.devicesdk:app:$esper_sdk_version"
+
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$ext_junit_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
