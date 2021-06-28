@@ -18,4 +18,8 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
     }
+
+    companion object {
+        private const val TAG = "MainActivity"
+    }
 }
