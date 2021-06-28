@@ -2,6 +2,8 @@ package com.example.espersdksampleapp.provider
 
 import android.provider.Telephony
 import android.util.Log
+import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 
 object SampleJsonStringProvider {
@@ -40,5 +42,47 @@ object SampleJsonStringProvider {
         }
 
         return apnConfigValues.toString()
+    }
+
+    @JvmStatic
+    fun getSampleManagedAppConfigurationsJsonString(): String {
+        // Preparing chrome package json object
+        val packageName = "com.android.chrome"
+        val urlBlacklistKey = "URLBlacklist"
+        val urlBlacklist = arrayOf("instagram.com")
+        val urlWhitelistKey = "URLWhitelist"
+        val urlWhitelist = arrayOf("*")
+        val forceGoogleSafeSearchKey = "ForceGoogleSafeSearch"
+        val forceGoogleSafeSearch = "true"
+        val homepageLocationKey = "HomepageLocation"
+        val homepageLocation = "https://esper.io/"
+        val chromePackageJsonObject = JSONObject()
+        try {
+            chromePackageJsonObject.put(urlBlacklistKey, JSONArray(urlBlacklist))
+            chromePackageJsonObject.put(urlWhitelistKey, JSONArray(urlWhitelist))
+            chromePackageJsonObject.put(forceGoogleSafeSearchKey, forceGoogleSafeSearch)
+            chromePackageJsonObject.put(homepageLocationKey, homepageLocation)
+        } catch (jsonException: JSONException) {
+            Log.e(TAG, "getDummyCustomSettingsJsonConfigString: ", jsonException)
+        }
+
+        // Preparing managed app config values json object
+        val managedAppConfigValuesJsonObject = JSONObject()
+        try {
+            managedAppConfigValuesJsonObject.put(packageName, chromePackageJsonObject)
+        } catch (jsonException: JSONException) {
+            Log.e(TAG, "getDummyCustomSettingsJsonConfigString: ", jsonException)
+        }
+
+        // Preparing custom setting config values json object
+        val managedAppConfigurationsKey = "managedAppConfigurations"
+        val jsonObject = JSONObject()
+        try {
+            jsonObject.put(managedAppConfigurationsKey, managedAppConfigValuesJsonObject)
+        } catch (jsonException: JSONException) {
+            Log.e(TAG, "getDummyCustomSettingsJsonConfigString: ", jsonException)
+        }
+
+        return jsonObject.toString()
     }
 }
