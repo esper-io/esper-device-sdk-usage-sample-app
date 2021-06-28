@@ -13,7 +13,6 @@ object SampleJsonStringProvider {
     @JvmStatic
     fun getSampleApnJsonConfigString(): String {
         val apnConfigValues = JSONObject()
-
         try {
             apnConfigValues.put(Telephony.Carriers.NAME, "Airtel SDK")
             apnConfigValues.put(Telephony.Carriers.APN, "Airtel SDK")
@@ -46,8 +45,7 @@ object SampleJsonStringProvider {
 
     @JvmStatic
     fun getSampleManagedAppConfigurationsJsonString(): String {
-        // Preparing chrome package json object
-        val packageName = "com.android.chrome"
+        // Keys and Values required for preparation of chrome package json object
         val urlBlacklistKey = "URLBlacklist"
         val urlBlacklist = arrayOf("instagram.com")
         val urlWhitelistKey = "URLWhitelist"
@@ -56,6 +54,8 @@ object SampleJsonStringProvider {
         val forceGoogleSafeSearch = "true"
         val homepageLocationKey = "HomepageLocation"
         val homepageLocation = "https://esper.io/"
+
+        // Preparing chrome package json object
         val chromePackageJsonObject = JSONObject()
         try {
             chromePackageJsonObject.put(urlBlacklistKey, JSONArray(urlBlacklist))
@@ -67,6 +67,7 @@ object SampleJsonStringProvider {
         }
 
         // Preparing managed app config values json object
+        val packageName = "com.android.chrome"
         val managedAppConfigValuesJsonObject = JSONObject()
         try {
             managedAppConfigValuesJsonObject.put(packageName, chromePackageJsonObject)
@@ -88,6 +89,7 @@ object SampleJsonStringProvider {
 
     @JvmStatic
     fun getSampleNoNetworkFallbackConfigJsonString(): String {
+        // Defining keys required for preparation of config json
         val networkFallbackEnabledKey = "networkFallbackEnabled"
         val fallbackDurationFlightModeOnKey = "fallbackDurationFlightModeOn"
         val fallbackDurationOffKey = "fallbackDurationOff"
@@ -95,6 +97,7 @@ object SampleJsonStringProvider {
         val maxResetsInDayKey = "maxResetsInDay"
         val networkFallbackActionKey = "networkFallbackAction"
 
+        // Preparing no network fallback config json object
         val jsonObject = JSONObject()
         try {
             jsonObject.put(networkFallbackEnabledKey, true)
