@@ -1,3 +1,75 @@
 <resources>
     <string name="app_name">Esper SDK Sample App</string>
+    <string name="success">Success</string>
+    <string name="failure">Failure</string>
+    <string name="grant_settings_write_perms_text">Grant System Settings Write Permissions</string>
+    <string name="api_level_prefix">Esper Agent Device SDK information:\nAPI Level: %s\nRelease Name: %s</string>
+    <string name="information">Information</string>
+    <string name="execute">Execute</string>
+    <string name="token_input_hint">Enter API Access Token</string>
+    <string name="activate">Activate</string>
+    <string name="enter_input">Input is not entered.</string>
+    <string name="clear_app_data_input_prompt">Enter the package names in separate lines</string>
+    <string name="android_versions_min">This method is supported in Android API level %d and above. This device Android API Level is %d.</string>
+    <string name="activate_sdk_success">Success. SDK is now activated.</string>
+    <string name="activate_sdk_fail">Activation Failed. The token entered was not valid, please retry.</string>
+    <string name="start_dock_success">Success. Tap multiple times on top right corner of the screen to see the chevron of the dock. Tap on chevron to see the dock.</string>
+    <string name="show_dock_success">Success. Dock chevron is revealed at the top right corner of the screen. Tap on chevron to see the dock.</string>
+    <string name="esper_agent_not_found">Install Esper Agent and relaunch this application.</string>
+    <string name="password">Password</string>
+    <string name="hotspot_name_input_prompt">Pick a name for your Hotspot</string>
+    <string name="result">Result : %1s</string>
+    <string name="mobile_data">Mobile Data</string>
+    <string name="apn_config_json_string">Paste APN Config JSON string</string>
+    <string name="app_configurations_json_string">Paste App Configurations JSON String</string>
+    <string name="no_network_fallback_config_json_string">Paste No Network Fallback Configuration JSON String</string>
+    <string name="apn_id">APN ID</string>
+    <string name="brightness_scale">Brightness Scale</string>
+    <string name="power_button">Power Button</string>
+    <string name="changeButtonText">Change</string>
+    <string name="app_state_change_success">App State changed successfully</string>
+    <string name="app_state_change_failure">App state change failed</string>
+    <string name="app_state_select_message">Please select a state</string>
+    <string-array name="sdkMethods">
+        <item>Please select a Esper Device SDK method</item>
+        <!-- Below items need to be in alphabetically ascending order -->
+        <item>clearAppData</item>
+        <item>getEsperDeviceInfo</item>
+        <item>setAppOpMode</item>
+        <item>setBrightness</item>
+        <item>showDock</item>
+        <item>startDock</item>
+        <item>stopDock</item>
+        <item>enableWifiTethering</item>
+        <item>enableMobileData</item>
+        <item>getDeviceSettings</item>
+        <item>changeAppState</item>
+        <item>reboot</item>
+        <item>addAPN</item>
+        <item>updateAPN</item>
+        <item>removeAPN</item>
+        <item>setDefaultAPN</item>
+        <item>allowPowerOff</item>
+        <item>setOrientation</item>
+        <item>updateAppConfigurations</item>
+        <item>setSystemSetting</item>
+        <item>setGlobalSetting</item>
+        <item>configNoNetworkFallback</item>
+        <item>getEsperRemovableStoragePath</item>
+        <item>Launch EEA APIs Demo</item>
+    </string-array>
+    <string-array name="appStates">
+        <item>Please select a state</item>
+        <item>DISABLE</item>
+        <item>HIDE</item>
+        <item>SHOW</item>
+    </string-array>
+    <string-array name="orientations">
+        <item>Please select a orientation</item>
+        <item>AUTO</item>
+        <item>PORTRAIT_ONLY</item>
+        <item>INVERTED_PORTRAIT_ONLY</item>
+        <item>LANDSCAPE_ONLY</item>
+        <item>INVERTED_LANDSCAPE_ONLY</item>
+    </string-array>
 </resources>
