@@ -31,6 +31,12 @@ class MainActivity : AppCompatActivity() {
         sdk = EsperDeviceSDK.getInstance(applicationContext)
     }
 
+    override fun onStart() {
+        super.onStart()
+        // Initiate the Esper SDK activated or not check
+        initEsperSDKActivationCheck()
+    }
+
     /**
      * Method to initiate check to know whether Esper SDK is activated or not.
      */
