@@ -6,6 +6,7 @@ import android.util.Log
 import com.example.espersdksampleapp.databinding.ActivityMainBinding
 import io.esper.devicesdk.EsperDeviceSDK
 import io.esper.devicesdk.utils.EsperSDKVersions
+import kotlin.coroutines.CoroutineContext
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,6 +29,27 @@ class MainActivity : AppCompatActivity() {
 
         // Get the instance of the Esper SDK
         sdk = EsperDeviceSDK.getInstance(applicationContext)
+    }
+
+    /**
+     * Method to initiate check to know whether Esper SDK is activated or not.
+     */
+    private fun initEsperSDKActivationCheck() {
+        sdk.isActivated(object : EsperDeviceSDK.Callback<Boolean> {
+            override fun onResponse(isActive: Boolean?) {
+                isActive?.let {
+                    if (isActive) {
+                        Log.d(TAG, "isEsperSDKActivated: SDK is activated")
+                    } else {
+                        Log.d(TAG, "isEsperSDKActivated: SDK is not activated")
+                    }
+                } ?: Log.e(TAG, "isEsperSDKActivated: Something went wrong. isActive is null")
+            }
+
+            override fun onFailure(throwable: Throwable) {
+                Log.e(TAG, "isEsperSDKActivated: SDK is not activated", throwable)
+            }
+        })
     }
 
     /**
