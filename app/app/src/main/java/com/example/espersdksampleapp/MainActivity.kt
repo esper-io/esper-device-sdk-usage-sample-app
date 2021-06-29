@@ -37,6 +37,15 @@ class MainActivity : AppCompatActivity() {
         initEsperSDKActivationCheck()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        if (this::sdk.isInitialized) {
+            // Dispose off the SDK instance
+            sdk.dispose()
+        }
+    }
+
     /**
      * Method to initiate check to know whether Esper SDK is activated or not.
      */
