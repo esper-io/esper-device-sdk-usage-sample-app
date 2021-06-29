@@ -18,6 +18,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView()
 
+        // Get the instance of the Esper SDK
+        sdk = EsperDeviceSDK.getInstance(applicationContext)
+        
         /*
             NOTE: For Esper SDK to be functional,
                   Esper Agent should be installed in the device.
@@ -26,9 +29,6 @@ class MainActivity : AppCompatActivity() {
             Log.e(TAG, "onCreate: Error:: Esper Agent Not Found")
             return
         }
-
-        // Get the instance of the Esper SDK
-        sdk = EsperDeviceSDK.getInstance(applicationContext)
     }
 
     override fun onStart() {
