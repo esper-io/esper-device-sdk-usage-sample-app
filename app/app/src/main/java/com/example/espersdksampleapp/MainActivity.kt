@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
 
         // Get the instance of the Esper SDK
         sdk = EsperDeviceSDK.getInstance(applicationContext)
-        
+
         /*
             NOTE: For Esper SDK to be functional,
                   Esper Agent should be installed in the device.
@@ -53,6 +53,7 @@ class MainActivity : AppCompatActivity() {
      * Method to initiate check to know whether Esper SDK is activated or not.
      */
     private fun initEsperSDKActivationCheck() {
+        // Check whether sdk is activated or not
         sdk.isActivated(object : EsperDeviceSDK.Callback<Boolean> {
             override fun onResponse(isActive: Boolean?) {
                 isActive?.let {
@@ -81,6 +82,7 @@ class MainActivity : AppCompatActivity() {
             return false
         }
 
+        // Get the sdk api level
         val esperDeviceSDKApiLevel = sdk.apiLevel
 
         /*
