@@ -33,8 +33,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        // Initiate the Esper SDK activated or not check
-        initEsperSDKActivationCheck()
+
+        if (this::sdk.isInitialized) {
+            // Initiate the check whether Esper SDK activated or not
+            initEsperSDKActivationCheck()
+        }
     }
 
     override fun onDestroy() {
@@ -73,6 +76,11 @@ class MainActivity : AppCompatActivity() {
      * @return true if Esper Agent is installed else false
      */
     private fun isEsperAgentInstalled(): Boolean {
+        if (!this::sdk.isInitialized) {
+            Log.e(TAG, "isEsperAgentInstalled: sdk is not instantiated yet")
+            return false
+        }
+
         val esperDeviceSDKApiLevel = sdk.apiLevel
 
         /*
