@@ -1,16 +1,15 @@
 package com.example.espersdksampleapp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.example.espersdksampleapp.databinding.ActivityMainBinding
+import androidx.appcompat.app.AppCompatActivity
+import com.example.espersdksampleapp.databinding.ActivityMainNewBinding
 import io.esper.devicesdk.EsperDeviceSDK
 import io.esper.devicesdk.utils.EsperSDKVersions
-import kotlin.coroutines.CoroutineContext
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainNewBinding
 
     private lateinit var sdk: EsperDeviceSDK
 
@@ -97,7 +96,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setContentView() {
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainNewBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
     }
