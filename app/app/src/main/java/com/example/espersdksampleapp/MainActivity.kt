@@ -2,6 +2,7 @@ package com.example.espersdksampleapp
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.espersdksampleapp.databinding.ActivityMainNewBinding
 import io.esper.devicesdk.EsperDeviceSDK
@@ -58,14 +59,23 @@ class MainActivity : AppCompatActivity() {
                 isActive?.let {
                     if (isActive) {
                         Log.d(TAG, "isEsperSDKActivated: SDK is activated")
+
+                        // Hide the sdk not activated info card
+                        setSdkNotActivatedInfoCardVisibility(View.GONE)
                     } else {
                         Log.d(TAG, "isEsperSDKActivated: SDK is not activated")
+
+                        // Show the sdk not activated info card
+                        setSdkNotActivatedInfoCardVisibility(View.VISIBLE)
                     }
                 } ?: Log.e(TAG, "isEsperSDKActivated: Something went wrong. isActive is null")
             }
 
             override fun onFailure(throwable: Throwable) {
                 Log.e(TAG, "isEsperSDKActivated: SDK is not activated", throwable)
+
+                // Show the sdk not activated info card
+                setSdkNotActivatedInfoCardVisibility(View.VISIBLE)
             }
         })
     }
@@ -93,6 +103,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         return true
+    }
+
+    private fun setSdkNotActivatedInfoCardVisibility(visibility: Int) {
+        binding.sdkNotActivatedCard.visibility = visibility
     }
 
     private fun setContentView() {
