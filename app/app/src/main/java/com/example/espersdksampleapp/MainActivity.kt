@@ -59,23 +59,21 @@ class MainActivity : AppCompatActivity() {
                 isActive?.let {
                     if (isActive) {
                         Log.d(TAG, "isEsperSDKActivated: SDK is activated")
-
-                        // Hide the sdk not activated info card
-                        setSdkNotActivatedInfoCardVisibility(View.GONE)
                     } else {
                         Log.d(TAG, "isEsperSDKActivated: SDK is not activated")
-
-                        // Show the sdk not activated info card
-                        setSdkNotActivatedInfoCardVisibility(View.VISIBLE)
                     }
+
+                    // Update the sdk activation status card
+                    updateSdkActivationStatusCard(isActive)
+
                 } ?: Log.e(TAG, "isEsperSDKActivated: Something went wrong. isActive is null")
             }
 
             override fun onFailure(throwable: Throwable) {
                 Log.e(TAG, "isEsperSDKActivated: SDK is not activated", throwable)
 
-                // Show the sdk not activated info card
-                setSdkNotActivatedInfoCardVisibility(View.VISIBLE)
+                // Update the sdk activation status card
+                updateSdkActivationStatusCard(false)
             }
         })
     }
@@ -105,8 +103,39 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    private fun setSdkNotActivatedInfoCardVisibility(visibility: Int) {
-        binding.sdkNotActivatedCard.visibility = visibility
+    private fun updateSdkActivationStatusCard(isSdkActivated: Boolean) {
+        when {
+            isSdkActivated -> setSdkActivatedStatus()
+            else -> setSdkNotActivatedStatus()
+        }
+    }
+
+    private fun setSdkActivatedStatus() {
+        setSdkActivationStatusMessage(getString(R.string.sdk_activated_msg))
+
+        setShowActivationSdkCardBtnVisibility(View.GONE)
+
+        setSdkActivatedIconVisibility(View.VISIBLE)
+    }
+
+    private fun setSdkNotActivatedStatus() {
+        setSdkActivationStatusMessage(getString(R.string.sdk_not_activated_msg))
+
+        setSdkActivatedIconVisibility(View.GONE)
+
+        setShowActivationSdkCardBtnVisibility(View.VISIBLE)
+    }
+
+    private fun setSdkActivationStatusMessage(message: String) {
+        binding.sdkActivationStatusTextView.text = message
+    }
+
+    private fun setSdkActivatedIconVisibility(visibility: Int) {
+        binding.sdkActivatedIcon.visibility = visibility
+    }
+
+    private fun setShowActivationSdkCardBtnVisibility(visibility: Int) {
+        binding.showActivateSdkCardBtn.visibility = visibility
     }
 
     private fun setContentView() {
