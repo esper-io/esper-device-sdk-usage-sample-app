@@ -1,6 +1,7 @@
 package com.example.espersdksampleapp
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
         setContentView()
 
         setShowActivateSdkCardButtonClickListener()
+        setActivateSdkCardButtonClickListener()
 
         // Get the instance of the Esper SDK
         sdk = EsperDeviceSDK.getInstance(applicationContext)
@@ -105,9 +107,34 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    private fun activateSdk(token: String) {
+        if (TextUtils.isEmpty(token)) {
+            Log.e(TAG, "activateSdk: Activation token is empty")
+            return
+        }
+
+        // Activate the sdk
+        sdk.activateSDK(token, object : EsperDeviceSDK.Callback<Void> {
+            override fun onResponse(response: Void?) {
+                Log.d(TAG, "activateSdk: SDK was successfully activated")
+
+                // Update the sdk activation status card
+                updateSdkActivationStatusCard(true)
+            }
+
+            override fun onFailure(throwable: Throwable) {
+                Log.e(TAG, "activateSDK: SDK activation failed", throwable)
+            }
+
+        })
+    }
+
     private fun updateSdkActivationStatusCard(isSdkActivated: Boolean) {
         when {
-            isSdkActivated -> setSdkActivatedStatus()
+            isSdkActivated -> {
+                setActivateSdkCardVisibility(View.GONE)
+                setSdkActivatedStatus()
+            }
             else -> setSdkNotActivatedStatus()
         }
     }
@@ -148,6 +175,18 @@ class MainActivity : AppCompatActivity() {
 
     private fun setActivateSdkCardVisibility(visibility: Int) {
         binding.activateSdkCard.visibility = visibility
+    }
+
+    private fun setActivateSdkCardButtonClickListener() {
+        binding.apply {
+            activateSdkBtn.setOnClickListener {
+                // Get the entered sdk activation token
+                val token = sdkActivationTokenEditText.text.toString()
+
+                // Activate the sdk
+                activateSdk(token)
+            }
+        }
     }
 
     private fun setContentView() {
