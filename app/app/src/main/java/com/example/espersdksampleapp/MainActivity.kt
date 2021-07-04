@@ -123,32 +123,37 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(response: Void?) {
                 Log.d(TAG, "activateSdk: SDK was successfully activated")
 
-                // Clear and hide the sdk activation error message
-                clearAndHideSdkActivationErrorMessage()
-
-                // Hide the activate sdk card
-                setActivateSdkCardVisibility(View.GONE)
-
-                // Update the sdk activation status card
-                updateSdkActivationStatusCard(true)
-
-                // Show the sdk activation status card
-                setSdkActivationStatusCardVisibility(View.VISIBLE)
+                // Notify sdk activation success
+                notifySdkActivationSuccess()
             }
 
             override fun onFailure(throwable: Throwable) {
                 Log.e(TAG, "activateSDK: SDK activation failed", throwable)
 
-                val errorMessage = if (throwable is ActivationFailedException) {
-                    getString(R.string.activate_sdk_fail)
-                } else {
-                    "Failure: $throwable"
-                }
-
-                // Show activation error message
-                setAndShowSdkActivationErrorMessage(errorMessage)
+                // Notify sdk activation failure
+                notifySdkActivationFailure(throwable)
             }
         })
+    }
+
+    private fun notifySdkActivationSuccess() {
+        clearAndHideSdkActivationErrorMessage()
+
+        setActivateSdkCardVisibility(View.GONE)
+
+        updateSdkActivationStatusCard(true)
+
+        setSdkActivationStatusCardVisibility(View.VISIBLE)
+    }
+
+    private fun notifySdkActivationFailure(throwable: Throwable) {
+        val errorMessage = if (throwable is ActivationFailedException) {
+            getString(R.string.activate_sdk_fail)
+        } else {
+            "Failure: $throwable"
+        }
+
+        setAndShowSdkActivationErrorMessage(errorMessage)
     }
 
     private fun updateSdkActivationStatusCard(isSdkActivated: Boolean) {
