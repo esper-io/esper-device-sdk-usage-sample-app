@@ -8,4 +8,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="green_success">#00C853</color>
+    <color name="red_failure">#D50000</color>
 </resources>
