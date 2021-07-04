@@ -113,7 +113,7 @@ class MainActivity : AppCompatActivity() {
     private fun setSdkActivatedStatus() {
         setSdkActivationStatusMessage(getString(R.string.sdk_activated_msg))
 
-        setShowActivationSdkCardBtnVisibility(View.GONE)
+        setShowActivateSdkCardButtonVisibility(View.GONE)
 
         setSdkActivatedIconVisibility(View.VISIBLE)
     }
@@ -123,7 +123,7 @@ class MainActivity : AppCompatActivity() {
 
         setSdkActivatedIconVisibility(View.GONE)
 
-        setShowActivationSdkCardBtnVisibility(View.VISIBLE)
+        setShowActivateSdkCardButtonVisibility(View.VISIBLE)
     }
 
     private fun setSdkActivationStatusMessage(message: String) {
@@ -134,7 +134,7 @@ class MainActivity : AppCompatActivity() {
         binding.sdkActivatedIcon.visibility = visibility
     }
 
-    private fun setShowActivationSdkCardBtnVisibility(visibility: Int) {
+    private fun setShowActivateSdkCardButtonVisibility(visibility: Int) {
         binding.showActivateSdkCardBtn.visibility = visibility
     }
 
