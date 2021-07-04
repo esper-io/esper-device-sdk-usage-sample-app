@@ -1,9 +1,12 @@
 package com.example.espersdksampleapp
 
+import android.content.res.Resources
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.example.espersdksampleapp.databinding.ActivityMainNewBinding
 import io.esper.devicesdk.EsperDeviceSDK
@@ -240,6 +243,55 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainNewBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+    }
+
+    private inner class SdkMethodSelectListener : AdapterView.OnItemSelectedListener {
+        private val TAG = "SdkMethodSelectListener"
+
+        private val sdkMethodList = resources.getStringArray(R.array.sdkMethods)
+
+        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            if (!isSelectedPositionValid(position)) {
+                Log.e(TAG, "onItemSelected: Invalid method index")
+                return
+            }
+
+            try {
+                when (sdkMethodList[position]) {
+                    getString(R.string.add_apn) -> TODO()
+                    getString(R.string.allow_power_off) -> TODO()
+                    getString(R.string.change_app_state) -> TODO()
+                    getString(R.string.clear_app_data) -> TODO()
+                    getString(R.string.config_no_network_fallback) -> TODO()
+                    getString(R.string.enable_mobile_data) -> TODO()
+                    getString(R.string.enable_wifi_tethering) -> TODO()
+                    getString(R.string.get_device_settings) -> TODO()
+                    getString(R.string.get_esper_device_info) -> TODO()
+                    getString(R.string.get_esper_removable_storage_path) -> TODO()
+                    getString(R.string.reboot) -> TODO()
+                    getString(R.string.remove_apn) -> TODO()
+                    getString(R.string.set_app_op_mode) -> TODO()
+                    getString(R.string.set_brightness) -> TODO()
+                    getString(R.string.set_default_apn) -> TODO()
+                    getString(R.string.set_global_setting) -> TODO()
+                    getString(R.string.set_orientation) -> TODO()
+                    getString(R.string.set_system_setting) -> TODO()
+                    getString(R.string.show_dock) -> TODO()
+                    getString(R.string.start_dock) -> TODO()
+                    getString(R.string.stop_dock) -> TODO()
+                    getString(R.string.update_apn) -> TODO()
+                    getString(R.string.update_app_configurations) -> TODO()
+                    getString(R.string.launch_eea_apis_demo) -> TODO()
+                }
+            } catch (exception: Resources.NotFoundException) {
+                Log.e(TAG, "onItemSelected: SDK method not found")
+            }
+        }
+
+        override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+        private fun isSelectedPositionValid(position: Int) =
+            position >= 0 && position < sdkMethodList.size
     }
 
     companion object {
