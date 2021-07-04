@@ -139,6 +139,21 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    private fun setSdkMethodsDropdown() {
+        val arrayAdapter = ArrayAdapter.createFromResource(
+            this,
+            R.array.sdkMethods,
+            android.R.layout.simple_spinner_item
+        )
+
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        binding.apply {
+            sdkMethodSpinner.adapter = arrayAdapter
+            sdkMethodSpinner.onItemSelectedListener = SdkMethodSelectListener()
+        }
+    }
+
     private fun notifySdkActivationSuccess() {
         clearAndHideSdkActivationErrorMessage()
 
