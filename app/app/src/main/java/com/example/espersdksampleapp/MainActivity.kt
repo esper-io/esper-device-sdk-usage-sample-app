@@ -227,10 +227,7 @@ class MainActivity : AppCompatActivity() {
     private fun setActivateSdkCardButtonClickListener() {
         binding.apply {
             activateSdkBtn.setOnClickListener {
-                // Get the entered sdk activation token
                 val token = sdkActivationTokenEditText.text.toString()
-
-                // Activate the sdk
                 activateSdk(token)
             }
         }
