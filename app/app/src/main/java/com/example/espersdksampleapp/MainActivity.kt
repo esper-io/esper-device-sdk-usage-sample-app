@@ -18,6 +18,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView()
 
+        setShowActivateSdkCardButtonClickListener()
+
         // Get the instance of the Esper SDK
         sdk = EsperDeviceSDK.getInstance(applicationContext)
 
@@ -136,6 +138,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun setShowActivateSdkCardButtonVisibility(visibility: Int) {
         binding.showActivateSdkCardBtn.visibility = visibility
+    }
+
+    private fun setShowActivateSdkCardButtonClickListener() {
+        binding.showActivateSdkCardBtn.setOnClickListener {
+            setActivateSdkCardVisibility(View.VISIBLE)
+        }
+    }
+
+    private fun setActivateSdkCardVisibility(visibility: Int) {
+        binding.activateSdkCard.visibility = visibility
     }
 
     private fun setContentView() {
