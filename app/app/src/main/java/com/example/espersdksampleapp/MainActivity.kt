@@ -118,23 +118,25 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(response: Void?) {
                 Log.d(TAG, "activateSdk: SDK was successfully activated")
 
+                // Hide the activate sdk card
+                setActivateSdkCardVisibility(View.GONE)
+
                 // Update the sdk activation status card
                 updateSdkActivationStatusCard(true)
+
+                // Show the sdk activation status card
+                setSdkActivationStatusCardVisibility(View.VISIBLE)
             }
 
             override fun onFailure(throwable: Throwable) {
                 Log.e(TAG, "activateSDK: SDK activation failed", throwable)
             }
-
         })
     }
 
     private fun updateSdkActivationStatusCard(isSdkActivated: Boolean) {
         when {
-            isSdkActivated -> {
-                setActivateSdkCardVisibility(View.GONE)
-                setSdkActivatedStatus()
-            }
+            isSdkActivated -> setSdkActivatedStatus()
             else -> setSdkNotActivatedStatus()
         }
     }
@@ -159,6 +161,10 @@ class MainActivity : AppCompatActivity() {
         binding.sdkActivationStatusTextView.text = message
     }
 
+    private fun setSdkActivationStatusCardVisibility(visibility: Int) {
+        binding.sdkActivationStatusCard.visibility = visibility
+    }
+
     private fun setSdkActivatedIconVisibility(visibility: Int) {
         binding.sdkActivatedIcon.visibility = visibility
     }
@@ -169,6 +175,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setShowActivateSdkCardButtonClickListener() {
         binding.showActivateSdkCardBtn.setOnClickListener {
+            setSdkActivationStatusCardVisibility(View.GONE)
             setActivateSdkCardVisibility(View.VISIBLE)
         }
     }
