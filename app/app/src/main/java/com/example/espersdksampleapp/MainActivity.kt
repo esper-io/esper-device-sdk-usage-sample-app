@@ -7,6 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.espersdksampleapp.databinding.ActivityMainNewBinding
 import io.esper.devicesdk.EsperDeviceSDK
+import io.esper.devicesdk.exceptions.ActivationFailedException
 import io.esper.devicesdk.utils.EsperSDKVersions
 
 class MainActivity : AppCompatActivity() {
@@ -110,6 +111,10 @@ class MainActivity : AppCompatActivity() {
     private fun activateSdk(token: String) {
         if (TextUtils.isEmpty(token)) {
             Log.e(TAG, "activateSdk: Activation token is empty")
+
+            // Show token not entered error message
+            setAndShowSdkActivationErrorMessage(getString(R.string.enter_token))
+
             return
         }
 
@@ -117,6 +122,9 @@ class MainActivity : AppCompatActivity() {
         sdk.activateSDK(token, object : EsperDeviceSDK.Callback<Void> {
             override fun onResponse(response: Void?) {
                 Log.d(TAG, "activateSdk: SDK was successfully activated")
+
+                // Clear and hide the sdk activation error message
+                clearAndHideSdkActivationErrorMessage()
 
                 // Hide the activate sdk card
                 setActivateSdkCardVisibility(View.GONE)
@@ -130,6 +138,15 @@ class MainActivity : AppCompatActivity() {
 
             override fun onFailure(throwable: Throwable) {
                 Log.e(TAG, "activateSDK: SDK activation failed", throwable)
+
+                val errorMessage = if (throwable is ActivationFailedException) {
+                    getString(R.string.activate_sdk_fail)
+                } else {
+                    "Failure: $throwable"
+                }
+
+                // Show activation error message
+                setAndShowSdkActivationErrorMessage(errorMessage)
             }
         })
     }
@@ -194,6 +211,24 @@ class MainActivity : AppCompatActivity() {
                 activateSdk(token)
             }
         }
+    }
+
+    private fun clearAndHideSdkActivationErrorMessage() {
+        setSdkActivationErrorMessageVisibility(View.GONE)
+        setSdkActivationErrorMessage("")
+    }
+
+    private fun setAndShowSdkActivationErrorMessage(errorMessage: String) {
+        setSdkActivationErrorMessage(errorMessage)
+        setSdkActivationErrorMessageVisibility(View.VISIBLE)
+    }
+
+    private fun setSdkActivationErrorMessageVisibility(visibility: Int) {
+        binding.sdkActivationErrorMessageTextView.visibility = visibility
+    }
+
+    private fun setSdkActivationErrorMessage(errorMessage: String) {
+        binding.sdkActivationErrorMessageTextView.text = errorMessage
     }
 
     private fun setContentView() {
