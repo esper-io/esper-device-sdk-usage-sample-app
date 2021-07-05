@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import android.view.View.OnClickListener
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
@@ -152,7 +153,7 @@ class MainActivity : AppCompatActivity() {
         val inputHint = getString(R.string.apn_config_json_string)
         val sampleInputText = SampleJsonStringProvider.getSampleApnJsonConfigString()
 
-        val buttonClickListener = View.OnClickListener {
+        val buttonClickListener = OnClickListener {
             // Add the new APN
             sdk.addNewApnConfig(
                 object : EsperDeviceSDK.Callback<Int> {
@@ -172,6 +173,43 @@ class MainActivity : AppCompatActivity() {
             OneTextField(
                 inputHint,
                 sampleInputText,
+                buttonClickListener = buttonClickListener
+            )
+        )
+    }
+
+    /**
+     * Method to change the app state.
+     */
+    private fun changeAppState() {
+        val inputHint = getString(R.string.enter_package_name)
+        val arrayResourceId = R.array.appStates
+
+        val buttonClickListener = OnClickListener {
+            val packageName = getPrimaryInputEditTextInput()
+            val appState = getSelectedItemFromSpinnerInput()
+
+            Log.d(TAG, "changeAppState: package: [$packageName] | state: [$appState]")
+
+            // Change the app state
+            sdk.changeAppState(
+                packageName,
+                appState,
+                object : EsperDeviceSDK.Callback<Boolean> {
+                    override fun onResponse(response: Boolean?) {
+                        TODO("Not yet implemented")
+                    }
+
+                    override fun onFailure(throwable: Throwable) {
+                        Log.e(TAG, "changeAppState: Failed to change the app state.", throwable)
+                    }
+                })
+        }
+
+        loadInputType(
+            OneTextFieldOneSpinner(
+                inputHint,
+                arrayResourceId = arrayResourceId,
                 buttonClickListener = buttonClickListener
             )
         )
@@ -222,6 +260,8 @@ class MainActivity : AppCompatActivity() {
 
                 inputType.arrayResourceId?.let { resourceId -> setSpinnerInputAdapter(resourceId) }
                 setSpinnerInputVisibility(View.VISIBLE)
+
+                buttonText = inputType.buttonText ?: getString(R.string.changeButtonText)
             }
         }
 
@@ -234,9 +274,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun resetInputContainer() {
         setPrimaryInputEditTextHint("")
+        setPrimaryInputEditText("")
         setPrimaryInputEditTextVisibility(View.GONE)
 
         setSecondaryInputEditTextHint("")
+        setSecondaryInputEditText("")
         setSecondaryInputEditTextVisibility(View.GONE)
 
         setSpinnerInputAdapter(null)
@@ -274,6 +316,8 @@ class MainActivity : AppCompatActivity() {
     private fun setSecondaryInputEditTextVisibility(visibility: Int) {
         binding.secondaryInputEditText.visibility = visibility
     }
+
+    private fun getSelectedItemFromSpinnerInput() = binding.spinnerInput.selectedItem.toString()
 
     private fun setSpinnerInputAdapter(arrayResourceId: Int) {
         val arrayAdapter = ArrayAdapter.createFromResource(
@@ -313,7 +357,7 @@ class MainActivity : AppCompatActivity() {
         binding.processInputBtn.visibility = visibility
     }
 
-    private fun setProcessInputButtonClickListener(onClickListener: View.OnClickListener) {
+    private fun setProcessInputButtonClickListener(onClickListener: OnClickListener) {
         binding.processInputBtn.setOnClickListener(onClickListener)
     }
 
@@ -454,7 +498,7 @@ class MainActivity : AppCompatActivity() {
                 when (sdkMethodList[position]) {
                     getString(R.string.add_apn) -> addApn()
                     getString(R.string.allow_power_off) -> TODO()
-                    getString(R.string.change_app_state) -> TODO()
+                    getString(R.string.change_app_state) -> changeAppState()
                     getString(R.string.clear_app_data) -> TODO()
                     getString(R.string.config_no_network_fallback) -> TODO()
                     getString(R.string.enable_mobile_data) -> TODO()
