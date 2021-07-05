@@ -15,6 +15,8 @@ import com.example.espersdksampleapp.provider.SampleJsonStringProvider
 import io.esper.devicesdk.EsperDeviceSDK
 import io.esper.devicesdk.exceptions.ActivationFailedException
 import io.esper.devicesdk.utils.EsperSDKVersions
+import java.lang.NumberFormatException
+import java.util.function.ToDoubleBiFunction
 
 class MainActivity : AppCompatActivity() {
 
@@ -247,6 +249,44 @@ class MainActivity : AppCompatActivity() {
                 Log.e(TAG, "reboot: Failed to reboot.", throwable)
             }
         })
+    }
+
+    /**
+     * Method to set the screen brightness.
+     */
+    private fun setBrightness() {
+        val inputHint = getString(R.string.brightness_scale)
+
+        val buttonClickListener = OnClickListener {
+            val scale = try {
+                val inputScale = getPrimaryInputEditTextInput()
+                Integer.parseInt(inputScale)
+            } catch (exception: NumberFormatException) {
+                -1
+            }
+
+            if (scale in 0..100) {
+                // Set the screen brightness
+                sdk.setBrightness(scale, object : EsperDeviceSDK.Callback<Boolean> {
+                    override fun onResponse(response: Boolean?) {
+                        TODO("Not yet implemented")
+                    }
+
+                    override fun onFailure(throwable: Throwable) {
+                        TODO("Not yet implemented")
+                    }
+                })
+            } else {
+                TODO("Not yet implemented")
+            }
+        }
+
+        loadInputType(
+            OneTextField(
+                inputHint,
+                buttonClickListener = buttonClickListener
+            )
+        )
     }
 
     private fun loadInputType(inputType: InputType) {
@@ -543,7 +583,7 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.reboot) -> reboot()
                     getString(R.string.remove_apn) -> TODO()
                     getString(R.string.set_app_op_mode) -> TODO()
-                    getString(R.string.set_brightness) -> TODO()
+                    getString(R.string.set_brightness) -> setBrightness()
                     getString(R.string.set_default_apn) -> TODO()
                     getString(R.string.set_global_setting) -> TODO()
                     getString(R.string.set_orientation) -> TODO()
