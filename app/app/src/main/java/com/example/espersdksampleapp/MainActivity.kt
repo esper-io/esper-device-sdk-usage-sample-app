@@ -10,6 +10,7 @@ import android.view.View.OnClickListener
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.CompoundButton.OnCheckedChangeListener
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.espersdksampleapp.databinding.ActivityMainNewBinding
 import com.example.espersdksampleapp.enum.*
@@ -707,6 +708,20 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    /**
+     * Method to Launch EEA APIs Demo.
+     */
+    private fun launchEeaApisDemo() {
+        val intent = packageManager.getLaunchIntentForPackage(SAMPLE_EEA_APP_PACKAGE_NAME)
+
+        if (intent == null) {
+            Toast.makeText(this, "Error: Demo App Not Installed", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        startActivity(intent)
+    }
+
     private fun loadInputType(inputType: InputType) {
         var buttonText = ""
 
@@ -1021,7 +1036,7 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.stop_dock) -> stopDock()
                     getString(R.string.update_apn) -> updateApn()
                     getString(R.string.update_app_configurations) -> updateAppConfigurations()
-                    getString(R.string.launch_eea_apis_demo) -> TODO()
+                    getString(R.string.launch_eea_apis_demo) -> launchEeaApisDemo()
                 }
             } catch (exception: Resources.NotFoundException) {
                 Log.e(TAG, "onItemSelected: SDK method not found")
@@ -1036,5 +1051,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "MainActivity"
+
+        private const val SAMPLE_EEA_APP_PACKAGE_NAME = "io.esper.sdkeeasample"
     }
 }
