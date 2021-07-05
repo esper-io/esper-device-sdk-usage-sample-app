@@ -853,7 +853,7 @@ class MainActivity : AppCompatActivity() {
                 val color = if (isFailure) {
                     ContextCompat.getColor(this@MainActivity, R.color.red_failure)
                 } else {
-                    ContextCompat.getColor(this@MainActivity, R.color.green_success)
+                    ContextCompat.getColor(this@MainActivity, android.R.color.black)
                 }
 
                 sdkMethodOutputTextView.setTextColor(color)
