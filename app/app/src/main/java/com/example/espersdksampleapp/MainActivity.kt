@@ -264,6 +264,35 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
+     * Method to Remove Apn.
+     */
+    private fun removeApn() {
+        val inputHint = getString(R.string.apn_id)
+
+        val buttonClickListener = OnClickListener {
+            val apnId = getPrimaryInputEditTextInput()
+
+            // Remove the apn config
+            sdk.removeApnConfig(object : EsperDeviceSDK.Callback<Int> {
+                override fun onResponse(response: Int?) {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onFailure(throwable: Throwable) {
+                    Log.e(TAG, "removeApn: Failed to remove apn.", throwable)
+                }
+            }, apnId)
+        }
+
+        loadInputType(
+            OneTextField(
+                inputHint,
+                buttonClickListener = buttonClickListener
+            )
+        )
+    }
+
+    /**
      * Method to set the Screen Brightness.
      */
     private fun setBrightness() {
@@ -744,7 +773,7 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.get_esper_device_info) -> TODO()
                     getString(R.string.get_esper_removable_storage_path) -> TODO()
                     getString(R.string.reboot) -> reboot()
-                    getString(R.string.remove_apn) -> TODO()
+                    getString(R.string.remove_apn) -> removeApn()
                     getString(R.string.set_app_op_mode) -> TODO()
                     getString(R.string.set_brightness) -> setBrightness()
                     getString(R.string.set_default_apn) -> setDefaultApn()
