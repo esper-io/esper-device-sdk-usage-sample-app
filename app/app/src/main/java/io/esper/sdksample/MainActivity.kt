@@ -52,6 +52,8 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
+        setAndShowSdkInfoCard()
+
         setupSdkPlayground()
     }
 
@@ -979,6 +981,22 @@ class MainActivity : AppCompatActivity() {
 
     private fun setProcessInputButtonClickListener(onClickListener: OnClickListener) {
         binding.processInputBtn.setOnClickListener(onClickListener)
+    }
+
+    private fun setAndShowSdkInfoCard() {
+        val esperAgentDeviceSdkApiLevel = sdk.apiLevel
+        val esperAgentDeviceSdkReleaseName = sdk.apiReleaseName
+
+        val sdkInfo = String.format(
+            getString(R.string.api_level_prefix),
+            esperAgentDeviceSdkApiLevel,
+            esperAgentDeviceSdkReleaseName
+        )
+
+        binding.apply {
+            sdkInfoTextView.text = sdkInfo
+            sdkInfoCard.visibility = View.VISIBLE
+        }
     }
 
     private fun setupSdkPlayground() {
