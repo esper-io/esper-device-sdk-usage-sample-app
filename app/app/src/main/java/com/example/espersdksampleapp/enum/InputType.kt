@@ -1,6 +1,7 @@
 package com.example.espersdksampleapp.enum
 
 import android.view.View.OnClickListener
+import android.widget.CompoundButton.OnCheckedChangeListener
 
 sealed class InputType(
     val primaryHint: String? = null,
@@ -12,6 +13,7 @@ sealed class InputType(
     val arrayResourceId: Int? = null,
 
     val switchText: String? = null,
+    val switchCheckedChangeListener: OnCheckedChangeListener? = null,
 
     val buttonText: String? = null,
     val buttonClickListener: OnClickListener? = null
@@ -58,7 +60,14 @@ class Spinner(
         buttonClickListener = buttonClickListener
     )
 
-class Switch(switchText: String? = null) : InputType(switchText = switchText)
+class Switch(
+    switchText: String? = null,
+    switchCheckedChangeListener: OnCheckedChangeListener? = null
+) :
+    InputType(
+        switchText = switchText,
+        switchCheckedChangeListener = switchCheckedChangeListener
+    )
 
 class OneTextFieldOneSpinner(
     hint: String? = null,
