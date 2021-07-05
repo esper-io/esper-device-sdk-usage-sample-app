@@ -407,11 +407,12 @@ class MainActivity : AppCompatActivity() {
                 true,
                 object : EsperDeviceSDK.Callback<String> {
                     override fun onResponse(response: String?) {
-                        TODO("Not yet implemented")
+                        showSdkMethodOutput("onResponse: $response")
                     }
 
                     override fun onFailure(throwable: Throwable) {
                         Log.e(TAG, "enableWifiTethering: Failure occurred.", throwable)
+                        showSdkMethodFailureOutput(throwable)
                     }
                 })
         }
