@@ -337,6 +337,7 @@ class MainActivity : AppCompatActivity() {
         val key = "adb_enabled"
         val value = "false"
 
+        // Set the global setting
         sdk.setGlobalSetting(key, value, object : EsperDeviceSDK.Callback<Boolean> {
             override fun onResponse(response: Boolean?) {
                 TODO("Not yet implemented")
@@ -349,7 +350,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Method to set the device orientation.
+     * Method to set the Device Orientation.
      */
     private fun setDeviceOrientation() {
         val arrayResourceId = R.array.orientations
@@ -381,6 +382,25 @@ class MainActivity : AppCompatActivity() {
                 buttonClickListener = buttonClickListener
             )
         )
+    }
+
+    /**
+     * Method to set the System Setting.
+     */
+    private fun setSystemSetting() {
+        val key = "user_rotation"
+        val value = "2"
+
+        // Set the system setting
+        sdk.setSystemSetting(key, value, object : EsperDeviceSDK.Callback<Boolean> {
+            override fun onResponse(p0: Boolean?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onFailure(throwable: Throwable) {
+                Log.e(TAG, "setSystemSetting: Failed to set the system setting.", throwable)
+            }
+        })
     }
 
     private fun loadInputType(inputType: InputType) {
