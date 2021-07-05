@@ -152,7 +152,6 @@ class MainActivity : AppCompatActivity() {
         val inputHint = getString(R.string.apn_config_json_string)
         val demoInputText = SampleJsonStringProvider.getSampleApnJsonConfigString()
 
-        val buttonText = getString(R.string.execute)
         val buttonClickListener = View.OnClickListener {
             // Add the new APN
             sdk.addNewApnConfig(
@@ -169,17 +168,27 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        loadInputType(OneTextField(inputHint, demoInputText, buttonText, buttonClickListener))
+        loadInputType(
+            OneTextField(
+                inputHint,
+                demoInputText,
+                buttonClickListener = buttonClickListener
+            )
+        )
     }
 
     private fun loadInputType(inputType: InputType) {
         resetInputContainer()
+
+        var buttonText = ""
 
         when (inputType) {
             is OneTextField -> {
                 inputType.primaryHint?.let { hint -> setPrimaryInputEditTextHint(hint) }
                 inputType.primaryText?.let { text -> setPrimaryInputEditText(text) }
                 setPrimaryInputEditTextVisibility(View.VISIBLE)
+
+                buttonText = inputType.buttonText ?: getString(R.string.execute)
             }
 
             is TwoTextField -> {
@@ -190,11 +199,15 @@ class MainActivity : AppCompatActivity() {
                 inputType.secondaryHint?.let { hint -> setSecondaryInputEditTextHint(hint) }
                 inputType.secondaryText?.let { text -> setSecondaryInputEditText(text) }
                 setSecondaryInputEditTextVisibility(View.VISIBLE)
+
+                buttonText = inputType.buttonText ?: getString(R.string.execute)
             }
 
             is Spinner -> {
                 inputType.arrayResourceId?.let { resourceId -> setSpinnerInputAdapter(resourceId) }
                 setSpinnerInputVisibility(View.VISIBLE)
+
+                buttonText = inputType.buttonText ?: getString(R.string.changeButtonText)
             }
 
             is Switch -> {
@@ -212,8 +225,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        inputType.buttonText?.let { buttonText ->
+        if (!TextUtils.isEmpty(buttonText)) {
             setProcessInputButtonText(buttonText)
+            inputType.buttonClickListener?.let { setProcessInputButtonClickListener(it) }
             setProcessInputButtonVisibility(View.VISIBLE)
         }
     }
