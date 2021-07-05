@@ -15,6 +15,7 @@ import com.example.espersdksampleapp.databinding.ActivityMainNewBinding
 import com.example.espersdksampleapp.enum.*
 import com.example.espersdksampleapp.provider.SampleJsonStringProvider
 import io.esper.devicesdk.EsperDeviceSDK
+import io.esper.devicesdk.constants.AppOpsPermissions
 import io.esper.devicesdk.exceptions.ActivationFailedException
 import io.esper.devicesdk.utils.EsperSDKVersions
 import java.lang.NumberFormatException
@@ -422,6 +423,28 @@ class MainActivity : AppCompatActivity() {
                 buttonClickListener = buttonClickExecutor
             )
         )
+    }
+
+    /**
+     * Method to Set the AppOp Mode.
+     */
+    private fun setAppOpMode() {
+        if (sdk.apiLevel >= EsperSDKVersions.TESSARION_MR6 || Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            val appOpMode = AppOpsPermissions.OP_WRITE_SETTINGS
+
+            // Set the AppOp mode
+            sdk.setAppOpMode(appOpMode, true, object : EsperDeviceSDK.Callback<Void> {
+                override fun onResponse(response: Void?) {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onFailure(throwable: Throwable) {
+                    Log.e(TAG, "setAppOpMode: Failure occurred.", throwable)
+                }
+            })
+        } else {
+            TODO()
+        }
     }
 
     /**
@@ -987,7 +1010,7 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.get_esper_removable_storage_path) -> TODO()
                     getString(R.string.reboot) -> reboot()
                     getString(R.string.remove_apn) -> removeApn()
-                    getString(R.string.set_app_op_mode) -> TODO()
+                    getString(R.string.set_app_op_mode) -> setAppOpMode()
                     getString(R.string.set_brightness) -> setBrightness()
                     getString(R.string.set_default_apn) -> setDefaultApn()
                     getString(R.string.set_global_setting) -> setGlobalSetting()
