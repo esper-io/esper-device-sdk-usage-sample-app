@@ -150,7 +150,7 @@ class MainActivity : AppCompatActivity() {
      */
     private fun addApn() {
         val inputHint = getString(R.string.apn_config_json_string)
-        val demoInputText = SampleJsonStringProvider.getSampleApnJsonConfigString()
+        val sampleInputText = SampleJsonStringProvider.getSampleApnJsonConfigString()
 
         val buttonClickListener = View.OnClickListener {
             // Add the new APN
@@ -171,7 +171,7 @@ class MainActivity : AppCompatActivity() {
         loadInputType(
             OneTextField(
                 inputHint,
-                demoInputText,
+                sampleInputText,
                 buttonClickListener = buttonClickListener
             )
         )
