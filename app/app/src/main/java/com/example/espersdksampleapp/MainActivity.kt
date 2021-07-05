@@ -425,7 +425,23 @@ class MainActivity : AppCompatActivity() {
     private fun startDock() {
         // Start the dock
         sdk.startDock(object : EsperDeviceSDK.Callback<Void> {
-            override fun onResponse(p0: Void?) {
+            override fun onResponse(response: Void?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onFailure(throwable: Throwable) {
+                Log.e(TAG, "startDock: Failure occurred.", throwable)
+            }
+        })
+    }
+
+    /**
+     * Method to Stop the Dock.
+     */
+    private fun stopDock() {
+        // Stop the dock
+        sdk.stopDock(object : EsperDeviceSDK.Callback<Void> {
+            override fun onResponse(response: Void?) {
                 TODO("Not yet implemented")
             }
 
@@ -736,7 +752,7 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.set_system_setting) -> setSystemSetting()
                     getString(R.string.show_dock) -> showDock()
                     getString(R.string.start_dock) -> startDock()
-                    getString(R.string.stop_dock) -> TODO()
+                    getString(R.string.stop_dock) -> stopDock()
                     getString(R.string.update_apn) -> TODO()
                     getString(R.string.update_app_configurations) -> TODO()
                     getString(R.string.launch_eea_apis_demo) -> TODO()
