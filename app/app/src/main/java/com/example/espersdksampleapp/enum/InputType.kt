@@ -1,6 +1,5 @@
 package com.example.espersdksampleapp.enum
 
-import android.view.View
 import android.view.View.OnClickListener
 
 sealed class InputType(
@@ -19,7 +18,7 @@ sealed class InputType(
 )
 
 class OneTextField(
-    hint: String,
+    hint: String? = null,
     text: String? = null,
     buttonText: String? = null,
     buttonClickListener: OnClickListener? = null
@@ -32,9 +31,9 @@ class OneTextField(
     )
 
 class TwoTextField(
-    primaryHint: String,
+    primaryHint: String? = null,
     primaryText: String? = null,
-    secondaryHint2: String,
+    secondaryHint2: String? = null,
     secondaryText: String? = null,
     buttonText: String? = null,
     buttonClickListener: OnClickListener? = null
@@ -62,6 +61,16 @@ class Spinner(
 class Switch(switchText: String? = null) : InputType(switchText = switchText)
 
 class OneTextFieldOneSpinner(
+    hint: String? = null,
+    text: String? = null,
+    arrayResourceId: Int? = null,
     buttonText: String? = null,
     buttonClickListener: OnClickListener? = null
-) : InputType(buttonText = buttonText, buttonClickListener = buttonClickListener)
+) :
+    InputType(
+        primaryHint = hint,
+        primaryText = text,
+        arrayResourceId = arrayResourceId,
+        buttonText = buttonText,
+        buttonClickListener = buttonClickListener
+    )
