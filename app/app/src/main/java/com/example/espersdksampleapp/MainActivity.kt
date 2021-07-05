@@ -215,6 +215,24 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    /**
+     * Method to configure no network fallback.
+     */
+    private fun configNoNetworkFallback() {
+        val inputHint = getString(R.string.no_network_fallback_config_json_string)
+        val sampleConfigJson = SampleJsonStringProvider.getSampleNoNetworkFallbackConfigJsonString()
+
+        val buttonClickListener = OnClickListener { TODO("To be implemented") }
+
+        loadInputType(
+            OneTextField(
+                inputHint,
+                sampleConfigJson,
+                buttonClickListener = buttonClickListener
+            )
+        )
+    }
+
     private fun loadInputType(inputType: InputType) {
         resetInputContainer()
 
@@ -500,7 +518,7 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.allow_power_off) -> TODO()
                     getString(R.string.change_app_state) -> changeAppState()
                     getString(R.string.clear_app_data) -> TODO()
-                    getString(R.string.config_no_network_fallback) -> TODO()
+                    getString(R.string.config_no_network_fallback) -> configNoNetworkFallback()
                     getString(R.string.enable_mobile_data) -> TODO()
                     getString(R.string.enable_wifi_tethering) -> TODO()
                     getString(R.string.get_device_settings) -> TODO()
