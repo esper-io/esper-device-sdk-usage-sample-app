@@ -1,14 +1,22 @@
 package com.example.espersdksampleapp.enum
 
-enum class InputType {
+sealed class InputType(
+    val primaryHint: String? = null,
+    val secondaryHint: String? = null,
+    val arrayResourceId: Int? = null,
+    val switchText: String? = null,
+    val buttonText: String? = null
+)
 
-    OneTextField,
+class OneTextField(hint: String, buttonText: String? = null) :
+    InputType(primaryHint = hint, buttonText = buttonText)
 
-    TwoTextField,
+class TwoTextField(primaryHint: String, secondaryHint2: String) :
+    InputType(primaryHint = primaryHint, secondaryHint = secondaryHint2)
 
-    Spinner,
+class Spinner(arrayResourceId: Int? = null, buttonText: String? = null) :
+    InputType(arrayResourceId = arrayResourceId, buttonText = buttonText)
 
-    Switch,
+class Switch(switchText: String? = null) : InputType(switchText = switchText)
 
-    OneTextFieldOneSpinner
-}
+class OneTextFieldOneSpinner(buttonText: String? = null) : InputType(buttonText = buttonText)
