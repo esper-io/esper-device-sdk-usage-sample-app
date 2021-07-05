@@ -1,5 +1,6 @@
 package io.esper.sdksample
 
+import android.content.Context
 import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
@@ -22,9 +23,11 @@ import io.esper.devicesdk.utils.EsperSDKVersions
 import io.esper.sdksample.databinding.ActivityMainNewBinding
 import io.esper.sdksample.enum.*
 import org.json.JSONObject
+import java.io.File
 import java.lang.NumberFormatException
 import java.lang.StringBuilder
 import java.util.*
+import kotlin.math.min
 
 class MainActivity : AppCompatActivity() {
 
@@ -264,7 +267,7 @@ class MainActivity : AppCompatActivity() {
                                 else getString(R.string.app_state_change_failure)
 
                             showSdkMethodOutput("onResponse: $msg")
-                        }
+                        } ?: showSdkMethodOutput("onResponse: $response")
                     }
 
                     override fun onFailure(throwable: Throwable) {
@@ -342,7 +345,7 @@ class MainActivity : AppCompatActivity() {
             // Apply the given configuration
             sdk.configNoNetworkFallback(inputConfigJson, object : EsperDeviceSDK.Callback<Boolean> {
                 override fun onResponse(response: Boolean?) {
-                    response?.let { showSdkMethodOutput("onResponse: $response") }
+                    showSdkMethodOutput("onResponse: $response")
                 }
 
                 override fun onFailure(throwable: Throwable) {
@@ -436,7 +439,7 @@ class MainActivity : AppCompatActivity() {
                 Log.d(TAG, "getDeviceSettings: Device Settings: $response")
 
                 if (response == null) {
-                    TODO("Show Error Message")
+                    showSdkMethodOutput("Response from device is: Null")
                     return
                 }
 
@@ -446,11 +449,12 @@ class MainActivity : AppCompatActivity() {
                     stringBuilder.append("\n $param : ${response.opt(param)}")
                 }
 
-                TODO("Show Result")
+                showSdkMethodOutput(stringBuilder.toString())
             }
 
             override fun onFailure(throwable: Throwable) {
                 Log.e(TAG, "getDeviceSettings: Failure occurred.", throwable)
+                showSdkMethodFailureOutput(throwable)
             }
         })
     }
@@ -463,7 +467,7 @@ class MainActivity : AppCompatActivity() {
         sdk.getEsperDeviceInfo(object : EsperDeviceSDK.Callback<EsperDeviceInfo> {
             override fun onResponse(esperDeviceInfo: EsperDeviceInfo?) {
                 if (esperDeviceInfo == null) {
-                    TODO("Show Error")
+                    showSdkMethodOutput("onResponse: Esper Device Info is: Null")
                     return
                 }
 
@@ -481,11 +485,12 @@ class MainActivity : AppCompatActivity() {
                         .append("\nIMEI2: ${esperDeviceInfo.imei2}")
                 }
 
-                TODO("Show Result")
+                showSdkMethodOutput(deviceInfoBuilder.toString())
             }
 
             override fun onFailure(throwable: Throwable) {
                 Log.e(TAG, "getEsperDeviceInfo: Failure occurred.", throwable)
+                showSdkMethodFailureOutput(throwable)
             }
         })
     }
@@ -499,15 +504,14 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(response: String?) {
                 Log.d(TAG, "getEsperRemovableStoragePath: Successful. Path: $response")
 
-                // TODO("Show Result")
+                showSdkMethodOutput("onResponse: $response")
 
-                if (TextUtils.isEmpty(response)) return
-
-                TODO("Show Result")
+                response?.let { showSdkMethodOutput(getFileNameList(File(it))) }
             }
 
             override fun onFailure(throwable: Throwable) {
                 Log.e(TAG, "getEsperRemovableStoragePath: Failure occurred.", throwable)
+                showSdkMethodFailureOutput(throwable)
             }
         })
     }
@@ -519,11 +523,12 @@ class MainActivity : AppCompatActivity() {
         // Reboot the device
         sdk.reboot(object : EsperDeviceSDK.Callback<Boolean> {
             override fun onResponse(response: Boolean?) {
-                TODO("Not yet implemented")
+                showSdkMethodOutput("onResponse: $response")
             }
 
             override fun onFailure(throwable: Throwable) {
                 Log.e(TAG, "reboot: Failed to reboot.", throwable)
+                showSdkMethodFailureOutput(throwable)
             }
         })
     }
@@ -540,11 +545,12 @@ class MainActivity : AppCompatActivity() {
             // Remove the apn config
             sdk.removeApnConfig(object : EsperDeviceSDK.Callback<Int> {
                 override fun onResponse(response: Int?) {
-                    TODO("Not yet implemented")
+                    showSdkMethodOutput("onResponse: $response")
                 }
 
                 override fun onFailure(throwable: Throwable) {
                     Log.e(TAG, "removeApn: Failed to remove apn.", throwable)
+                    showSdkMethodFailureOutput(throwable)
                 }
             }, apnId)
         }
@@ -567,15 +573,16 @@ class MainActivity : AppCompatActivity() {
             // Set the AppOp mode
             sdk.setAppOpMode(appOpMode, true, object : EsperDeviceSDK.Callback<Void> {
                 override fun onResponse(response: Void?) {
-                    TODO("Not yet implemented")
+                    showSdkMethodOutput("${getString(R.string.grant_settings_write_perms_text)} : Successfully set the permissions")
                 }
 
                 override fun onFailure(throwable: Throwable) {
                     Log.e(TAG, "setAppOpMode: Failure occurred.", throwable)
+                    showSdkMethodFailureOutput(throwable)
                 }
             })
         } else {
-            TODO()
+            showSdkMethodOutput(getAndroidVersionsMinText(this, Build.VERSION_CODES.P))
         }
     }
 
@@ -597,15 +604,15 @@ class MainActivity : AppCompatActivity() {
                 // Set the screen brightness
                 sdk.setBrightness(scale, object : EsperDeviceSDK.Callback<Boolean> {
                     override fun onResponse(response: Boolean?) {
-                        TODO("Not yet implemented")
+                        showSdkMethodOutput("onResponse: $response")
                     }
 
                     override fun onFailure(throwable: Throwable) {
-                        TODO("Not yet implemented")
+                        showSdkMethodFailureOutput(throwable)
                     }
                 })
             } else {
-                TODO("Not yet implemented")
+                showSdkMethodOutput("Invalid Input")
             }
         }
 
@@ -629,11 +636,12 @@ class MainActivity : AppCompatActivity() {
             // Set the default apn
             sdk.setDefaultApn(object : EsperDeviceSDK.Callback<Int> {
                 override fun onResponse(response: Int?) {
-                    TODO("Not yet implemented")
+                    showSdkMethodOutput("onResponse: $response")
                 }
 
                 override fun onFailure(throwable: Throwable) {
                     Log.e(TAG, "setDefaultApn: Failure.", throwable)
+                    showSdkMethodFailureOutput(throwable)
                 }
             }, apnId)
         }
@@ -656,11 +664,12 @@ class MainActivity : AppCompatActivity() {
         // Set the global setting
         sdk.setGlobalSetting(key, value, object : EsperDeviceSDK.Callback<Boolean> {
             override fun onResponse(response: Boolean?) {
-                TODO("Not yet implemented")
+                showSdkMethodOutput("onResponse: $response")
             }
 
             override fun onFailure(throwable: Throwable) {
                 Log.e(TAG, "setGlobalSetting: Failed to set the global setting.", throwable)
+                showSdkMethodFailureOutput(throwable)
             }
         })
     }
@@ -676,18 +685,20 @@ class MainActivity : AppCompatActivity() {
 
             Log.d(TAG, "etDeviceOrientation: Selected orientation: $orientation")
 
-            if (TextUtils.isEmpty(orientation)) {
+            if (orientation == getString(R.string.app_state_select_message)) {
+                showSdkMethodOutput(getString(R.string.enter_input))
                 return@OnClickListener
             }
 
             // Set the device orientation
             sdk.setDeviceOrientation(orientation, object : EsperDeviceSDK.Callback<Boolean> {
                 override fun onResponse(response: Boolean?) {
-                    TODO("Not yet implemented")
+                    showSdkMethodOutput("onResponse: $response")
                 }
 
                 override fun onFailure(throwable: Throwable) {
                     Log.e(TAG, "setDeviceOrientation: Failure occurred.", throwable)
+                    showSdkMethodFailureOutput(throwable)
                 }
             })
         }
@@ -710,11 +721,12 @@ class MainActivity : AppCompatActivity() {
         // Set the system setting
         sdk.setSystemSetting(key, value, object : EsperDeviceSDK.Callback<Boolean> {
             override fun onResponse(response: Boolean?) {
-                TODO("Not yet implemented")
+                showSdkMethodOutput("onResponse: $response")
             }
 
             override fun onFailure(throwable: Throwable) {
                 Log.e(TAG, "setSystemSetting: Failed to set the system setting.", throwable)
+                showSdkMethodFailureOutput(throwable)
             }
         })
     }
@@ -726,11 +738,12 @@ class MainActivity : AppCompatActivity() {
         // Show the dock
         sdk.showDock(object : EsperDeviceSDK.Callback<Void> {
             override fun onResponse(response: Void?) {
-                TODO("Not yet implemented")
+                showSdkMethodOutput(getString(R.string.show_dock_success))
             }
 
             override fun onFailure(throwable: Throwable) {
                 Log.e(TAG, "showDock: Failure occurred.", throwable)
+                showSdkMethodFailureOutput(throwable)
             }
         })
     }
@@ -742,11 +755,12 @@ class MainActivity : AppCompatActivity() {
         // Start the dock
         sdk.startDock(object : EsperDeviceSDK.Callback<Void> {
             override fun onResponse(response: Void?) {
-                TODO("Not yet implemented")
+                showSdkMethodOutput(getString(R.string.start_dock_success))
             }
 
             override fun onFailure(throwable: Throwable) {
                 Log.e(TAG, "startDock: Failure occurred.", throwable)
+                showSdkMethodFailureOutput(throwable)
             }
         })
     }
@@ -758,11 +772,12 @@ class MainActivity : AppCompatActivity() {
         // Stop the dock
         sdk.stopDock(object : EsperDeviceSDK.Callback<Void> {
             override fun onResponse(response: Void?) {
-                TODO("Not yet implemented")
+                showSdkMethodOutput(getString(R.string.success))
             }
 
             override fun onFailure(throwable: Throwable) {
                 Log.e(TAG, "startDock: Failure occurred.", throwable)
+                showSdkMethodFailureOutput(throwable)
             }
         })
     }
@@ -785,11 +800,12 @@ class MainActivity : AppCompatActivity() {
             sdk.updateUpdateApnConfig(
                 object : EsperDeviceSDK.Callback<Int> {
                     override fun onResponse(response: Int?) {
-                        TODO("Not yet implemented")
+                        showSdkMethodOutput("onResponse: $response")
                     }
 
                     override fun onFailure(throwable: Throwable) {
                         Log.e(TAG, "updateApn: Failure occurred.", throwable)
+                        showSdkMethodFailureOutput(throwable)
                     }
                 }, apnId, apnConfigJsonString
             )
@@ -821,11 +837,12 @@ class MainActivity : AppCompatActivity() {
                 configJsonString,
                 object : EsperDeviceSDK.Callback<Boolean> {
                     override fun onResponse(response: Boolean?) {
-                        TODO("Not yet implemented")
+                        showSdkMethodOutput("onResponse: $response")
                     }
 
                     override fun onFailure(throwable: Throwable) {
                         Log.e(TAG, "updateAppConfigurations: Failure occurred.", throwable)
+                        showSdkMethodFailureOutput(throwable)
                     }
                 })
         }
@@ -1228,5 +1245,29 @@ class MainActivity : AppCompatActivity() {
         private const val TAG = "MainActivity"
 
         private const val SAMPLE_EEA_APP_PACKAGE_NAME = "io.esper.sdkeeasample"
+
+        private fun getAndroidVersionsMinText(context: Context, minApiLevel: Int) =
+            context.getString(R.string.android_versions_min, minApiLevel, Build.VERSION.SDK_INT)
+
+        private fun getFileNameList(parentFile: File): String {
+            val filesListBuilder = StringBuilder()
+
+            if (parentFile.exists()) {
+                val allFiles = parentFile.listFiles()
+                allFiles?.let {
+                    for (file in allFiles) {
+                        file?.apply {
+                            if (isDirectory) {
+                                filesListBuilder.append(getFileNameList(file))
+                            } else {
+                                filesListBuilder.append("${file.name}\n")
+                            }
+                        }
+                    }
+                }
+            }
+
+            return filesListBuilder.toString()
+        }
     }
 }
