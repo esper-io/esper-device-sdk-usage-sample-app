@@ -480,6 +480,44 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * Method to Update the Apn.
+     */
+    private fun updateApn() {
+        val primaryInputHint = getString(R.string.apn_config_json_string)
+        val primarySampleInputConfigJsonString =
+            SampleJsonStringProvider.getSampleApnJsonConfigString()
+
+        val secondaryInputHint = getString(R.string.apn_id)
+
+        val buttonClickListener = OnClickListener {
+            val apnConfigJsonString = getPrimaryInputEditTextInput()
+            val apnId = getSecondaryInputEditTextInput()
+
+            // Update the apn
+            sdk.updateUpdateApnConfig(
+                object : EsperDeviceSDK.Callback<Int> {
+                    override fun onResponse(response: Int?) {
+                        TODO("Not yet implemented")
+                    }
+
+                    override fun onFailure(throwable: Throwable) {
+                        Log.e(TAG, "updateApn: Failure occurred.", throwable)
+                    }
+                }, apnId, apnConfigJsonString
+            )
+        }
+
+        loadInputType(
+            TwoTextField(
+                primaryHint = primaryInputHint,
+                primaryText = primarySampleInputConfigJsonString,
+                secondaryHint = secondaryInputHint,
+                buttonClickListener = buttonClickListener
+            )
+        )
+    }
+
     private fun loadInputType(inputType: InputType) {
         var buttonText = ""
 
@@ -567,6 +605,8 @@ class MainActivity : AppCompatActivity() {
     private fun setPrimaryInputEditTextVisibility(visibility: Int) {
         binding.primaryInputEditText.visibility = visibility
     }
+
+    private fun getSecondaryInputEditTextInput() = binding.secondaryInputEditText.text.toString()
 
     private fun setSecondaryInputEditTextHint(hint: String) {
         binding.secondaryInputEditText.hint = hint
@@ -783,7 +823,7 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.show_dock) -> showDock()
                     getString(R.string.start_dock) -> startDock()
                     getString(R.string.stop_dock) -> stopDock()
-                    getString(R.string.update_apn) -> TODO()
+                    getString(R.string.update_apn) -> updateApn()
                     getString(R.string.update_app_configurations) -> TODO()
                     getString(R.string.launch_eea_apis_demo) -> TODO()
                 }
