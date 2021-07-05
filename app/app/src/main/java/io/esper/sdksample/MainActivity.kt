@@ -221,7 +221,7 @@ class MainActivity : AppCompatActivity() {
             // Allow power off
             sdk.allowPowerOff(checked, object : EsperDeviceSDK.Callback<Boolean> {
                 override fun onResponse(response: Boolean?) {
-                    showSdkMethodOutput("onResponse: allowPowerOff: $response")
+                    showSdkMethodOutput("onResponse: $response")
                 }
 
                 override fun onFailure(throwable: Throwable) {
