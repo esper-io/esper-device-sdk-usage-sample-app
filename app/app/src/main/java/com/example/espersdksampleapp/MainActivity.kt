@@ -19,7 +19,9 @@ import io.esper.devicesdk.EsperDeviceSDK
 import io.esper.devicesdk.constants.AppOpsPermissions
 import io.esper.devicesdk.exceptions.ActivationFailedException
 import io.esper.devicesdk.utils.EsperSDKVersions
+import org.json.JSONObject
 import java.lang.NumberFormatException
+import java.lang.StringBuilder
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -379,6 +381,35 @@ class MainActivity : AppCompatActivity() {
                 buttonClickListener = buttonClickExecutor
             )
         )
+    }
+
+    /**
+     * Method to get the Device Settings.
+     */
+    private fun getDeviceSettings() {
+        // Get the device settings
+        sdk.getDeviceSettings(object : EsperDeviceSDK.Callback<JSONObject> {
+            override fun onResponse(response: JSONObject?) {
+                Log.d(TAG, "getDeviceSettings: Device Settings: $response")
+
+                if (response == null) {
+                    TODO("Show Error Message")
+                    return
+                }
+
+                val stringBuilder = StringBuilder()
+                stringBuilder.append("\n Device Settings \n")
+                for (param in response.keys()) {
+                    stringBuilder.append("\n $param : ${response.opt(param)}")
+                }
+
+                TODO("Show Result")
+            }
+
+            override fun onFailure(throwable: Throwable) {
+                Log.e(TAG, "getDeviceSettings: Failure occurred.", throwable)
+            }
+        })
     }
 
     /**
@@ -1020,7 +1051,7 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.config_no_network_fallback) -> configNoNetworkFallback()
                     getString(R.string.enable_mobile_data) -> enableMobileData()
                     getString(R.string.enable_wifi_tethering) -> enableWifiTethering()
-                    getString(R.string.get_device_settings) -> TODO()
+                    getString(R.string.get_device_settings) -> getDeviceSettings()
                     getString(R.string.get_esper_device_info) -> TODO()
                     getString(R.string.get_esper_removable_storage_path) -> TODO()
                     getString(R.string.reboot) -> reboot()
