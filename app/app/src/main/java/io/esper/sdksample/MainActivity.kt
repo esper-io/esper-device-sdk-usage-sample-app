@@ -153,6 +153,10 @@ class MainActivity : AppCompatActivity() {
         // Activate the sdk
         sdk.activateSDK(token, object : EsperDeviceSDK.Callback<Void> {
             override fun onResponse(response: Void?) {
+                /*
+                    SDK Activation was Successful!
+                 */
+
                 Log.d(TAG, "activateSdk: SDK was successfully activated")
 
                 // Notify sdk activation success
@@ -160,6 +164,10 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(throwable: Throwable) {
+                /*
+                    SDK Activation Failed!
+                 */
+
                 Log.e(TAG, "activateSDK: SDK activation failed", throwable)
 
                 // Notify sdk activation failure
