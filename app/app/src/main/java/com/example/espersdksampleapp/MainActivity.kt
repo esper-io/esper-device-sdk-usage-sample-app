@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.example.espersdksampleapp.databinding.ActivityMainNewBinding
 import com.example.espersdksampleapp.enum.*
+import com.example.espersdksampleapp.provider.SampleJsonStringProvider
 import io.esper.devicesdk.EsperDeviceSDK
 import io.esper.devicesdk.exceptions.ActivationFailedException
 import io.esper.devicesdk.utils.EsperSDKVersions
@@ -29,6 +30,8 @@ class MainActivity : AppCompatActivity() {
 
         // Get the instance of the Esper SDK
         sdk = EsperDeviceSDK.getInstance(applicationContext)
+
+        setupSdkPlayground()
 
         /*
             NOTE: For Esper SDK to be functional,
@@ -142,12 +145,40 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * Method to add apn.
+     */
+    private fun addApn() {
+        val inputHint = getString(R.string.apn_config_json_string)
+        val demoInputText = SampleJsonStringProvider.getSampleApnJsonConfigString()
+
+        val buttonText = getString(R.string.execute)
+        val buttonClickListener = View.OnClickListener {
+            // Add the new APN
+            sdk.addNewApnConfig(
+                object : EsperDeviceSDK.Callback<Int> {
+                    override fun onResponse(response: Int?) {
+                        TODO("Not yet implemented")
+                    }
+
+                    override fun onFailure(throwable: Throwable) {
+                        Log.e(TAG, "addApn: Failed to add new apn.", throwable)
+                    }
+
+                }, getPrimaryInputEditTextInput()
+            )
+        }
+
+        loadInputType(OneTextField(inputHint, demoInputText, buttonText, buttonClickListener))
+    }
+
     private fun loadInputType(inputType: InputType) {
         resetInputContainer()
 
         when (inputType) {
             is OneTextField -> {
                 inputType.primaryHint?.let { hint -> setPrimaryInputEditTextHint(hint) }
+                inputType.primaryText?.let { text -> setPrimaryInputEditText(text) }
                 setPrimaryInputEditTextVisibility(View.VISIBLE)
             }
 
@@ -201,8 +232,14 @@ class MainActivity : AppCompatActivity() {
         setProcessInputButtonVisibility(View.GONE)
     }
 
+    private fun getPrimaryInputEditTextInput() = binding.primaryInputEditText.text.toString()
+
     private fun setPrimaryInputEditTextHint(hint: String) {
         binding.primaryInputEditText.hint = hint
+    }
+
+    private fun setPrimaryInputEditText(text: String) {
+        binding.primaryInputEditText.setText(text)
     }
 
     private fun setPrimaryInputEditTextVisibility(visibility: Int) {
@@ -394,7 +431,7 @@ class MainActivity : AppCompatActivity() {
 
             try {
                 when (sdkMethodList[position]) {
-                    getString(R.string.add_apn) -> TODO()
+                    getString(R.string.add_apn) -> addApn()
                     getString(R.string.allow_power_off) -> TODO()
                     getString(R.string.change_app_state) -> TODO()
                     getString(R.string.clear_app_data) -> TODO()
