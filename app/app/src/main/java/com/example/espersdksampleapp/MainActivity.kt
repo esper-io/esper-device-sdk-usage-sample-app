@@ -233,6 +233,22 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    /**
+     * Method to reboot the device.
+     */
+    private fun reboot() {
+        // Reboot the device
+        sdk.reboot(object : EsperDeviceSDK.Callback<Boolean> {
+            override fun onResponse(response: Boolean?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onFailure(throwable: Throwable) {
+                Log.e(TAG, "reboot: Failed to reboot.", throwable)
+            }
+        })
+    }
+
     private fun loadInputType(inputType: InputType) {
         resetInputContainer()
 
@@ -524,7 +540,7 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.get_device_settings) -> TODO()
                     getString(R.string.get_esper_device_info) -> TODO()
                     getString(R.string.get_esper_removable_storage_path) -> TODO()
-                    getString(R.string.reboot) -> TODO()
+                    getString(R.string.reboot) -> reboot()
                     getString(R.string.remove_apn) -> TODO()
                     getString(R.string.set_app_op_mode) -> TODO()
                     getString(R.string.set_brightness) -> TODO()
