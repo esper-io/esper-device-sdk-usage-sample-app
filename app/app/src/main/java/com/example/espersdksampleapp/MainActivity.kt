@@ -518,6 +518,40 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    /**
+     * Method to Update the App Configurations.
+     */
+    private fun updateAppConfigurations() {
+        val inputHint = getString(R.string.app_configurations_json_string)
+        val sampleConfigJsonString =
+            SampleJsonStringProvider.getSampleManagedAppConfigurationsJsonString()
+
+        val buttonClickListener = OnClickListener {
+            val configJsonString = getPrimaryInputEditTextInput()
+
+            // Update the app configuration
+            sdk.updateAppConfigurations(
+                configJsonString,
+                object : EsperDeviceSDK.Callback<Boolean> {
+                    override fun onResponse(response: Boolean?) {
+                        TODO("Not yet implemented")
+                    }
+
+                    override fun onFailure(throwable: Throwable) {
+                        Log.e(TAG, "updateAppConfigurations: Failure occurred.", throwable)
+                    }
+                })
+        }
+
+        loadInputType(
+            OneTextField(
+                hint = inputHint,
+                text = sampleConfigJsonString,
+                buttonClickListener = buttonClickListener
+            )
+        )
+    }
+
     private fun loadInputType(inputType: InputType) {
         var buttonText = ""
 
@@ -824,7 +858,7 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.start_dock) -> startDock()
                     getString(R.string.stop_dock) -> stopDock()
                     getString(R.string.update_apn) -> updateApn()
-                    getString(R.string.update_app_configurations) -> TODO()
+                    getString(R.string.update_app_configurations) -> updateAppConfigurations()
                     getString(R.string.launch_eea_apis_demo) -> TODO()
                 }
             } catch (exception: Resources.NotFoundException) {
