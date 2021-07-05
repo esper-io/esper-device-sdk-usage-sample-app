@@ -342,11 +342,12 @@ class MainActivity : AppCompatActivity() {
             // Apply the given configuration
             sdk.configNoNetworkFallback(inputConfigJson, object : EsperDeviceSDK.Callback<Boolean> {
                 override fun onResponse(response: Boolean?) {
-                    TODO("Not yet implemented")
+                    response?.let { showSdkMethodOutput("onResponse: $response") }
                 }
 
                 override fun onFailure(throwable: Throwable) {
                     Log.e(TAG, "configNoNetworkFallback: Failed to apply configuration.", throwable)
+                    showSdkMethodFailureOutput(throwable)
                 }
             })
         }
