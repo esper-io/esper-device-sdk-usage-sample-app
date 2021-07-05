@@ -133,6 +133,11 @@ class MainActivity : AppCompatActivity() {
         ||===================================================================================||
      */
 
+    /**
+     * Method to Activate the SDK.
+     *
+     * @param token sdk activation token
+     */
     private fun activateSdk(token: String) {
         if (TextUtils.isEmpty(token)) {
             Log.e(TAG, "activateSdk: Activation token is empty")
