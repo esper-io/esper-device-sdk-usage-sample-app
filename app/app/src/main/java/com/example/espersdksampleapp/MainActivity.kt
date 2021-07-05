@@ -38,6 +38,8 @@ class MainActivity : AppCompatActivity() {
             Log.e(TAG, "onCreate: Error:: Esper Agent Not Found")
             return
         }
+
+        setupSdkPlayground()
     }
 
     override fun onStart() {
@@ -251,6 +253,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun setProcessInputButtonVisibility(visibility: Int) {
         binding.processInputBtn.visibility = visibility
+    }
+
+    private fun setProcessInputButtonClickListener(onClickListener: View.OnClickListener) {
+        binding.processInputBtn.setOnClickListener(onClickListener)
     }
 
     private fun setupSdkPlayground() {
