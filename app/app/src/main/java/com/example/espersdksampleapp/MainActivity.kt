@@ -224,7 +224,20 @@ class MainActivity : AppCompatActivity() {
         val inputHint = getString(R.string.no_network_fallback_config_json_string)
         val sampleConfigJson = SampleJsonStringProvider.getSampleNoNetworkFallbackConfigJsonString()
 
-        val buttonClickListener = OnClickListener { TODO("To be implemented") }
+        val buttonClickListener = OnClickListener {
+            val inputConfigJson = getPrimaryInputEditTextInput()
+
+            // Apply the given configuration
+            sdk.configNoNetworkFallback(inputConfigJson, object : EsperDeviceSDK.Callback<Boolean> {
+                override fun onResponse(response: Boolean?) {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onFailure(throwable: Throwable) {
+                    Log.e(TAG, "configNoNetworkFallback: Failed to apply configuration.", throwable)
+                }
+            })
+        }
 
         loadInputType(
             OneTextField(
