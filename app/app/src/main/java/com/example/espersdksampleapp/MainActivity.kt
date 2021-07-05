@@ -9,6 +9,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.example.espersdksampleapp.databinding.ActivityMainNewBinding
+import com.example.espersdksampleapp.enum.*
 import io.esper.devicesdk.EsperDeviceSDK
 import io.esper.devicesdk.exceptions.ActivationFailedException
 import io.esper.devicesdk.utils.EsperSDKVersions
@@ -139,6 +140,48 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    private fun loadInputType(inputType: InputType) {
+        resetInputContainer()
+
+        when (inputType) {
+            is OneTextField -> {
+                inputType.primaryHint?.let { hint -> setPrimaryInputEditTextHint(hint) }
+                setPrimaryInputEditTextVisibility(View.VISIBLE)
+            }
+
+            is TwoTextField -> {
+                inputType.primaryHint?.let { hint -> setPrimaryInputEditTextHint(hint) }
+                setPrimaryInputEditTextVisibility(View.VISIBLE)
+
+                inputType.secondaryHint?.let { hint -> setSecondaryInputEditTextHint(hint) }
+                setSecondaryInputEditTextVisibility(View.VISIBLE)
+            }
+
+            is Spinner -> {
+                inputType.arrayResourceId?.let { resourceId -> setSpinnerInputAdapter(resourceId) }
+                setSpinnerInputVisibility(View.VISIBLE)
+            }
+
+            is Switch -> {
+                inputType.switchText?.let { text -> setSwitchInputText(text) }
+                setSwitchInputVisibility(View.VISIBLE)
+            }
+
+            is OneTextFieldOneSpinner -> {
+                inputType.primaryHint?.let { hint -> setPrimaryInputEditTextHint(hint) }
+                setPrimaryInputEditTextVisibility(View.VISIBLE)
+
+                inputType.arrayResourceId?.let { resourceId -> setSpinnerInputAdapter(resourceId) }
+                setSpinnerInputVisibility(View.VISIBLE)
+            }
+        }
+
+        inputType.buttonText?.let { buttonText ->
+            setProcessInputButtonText(buttonText)
+            setProcessInputButtonVisibility(View.VISIBLE)
+        }
+    }
+
     private fun resetInputContainer() {
         setPrimaryInputEditTextHint("")
         setPrimaryInputEditTextVisibility(View.GONE)
@@ -146,11 +189,14 @@ class MainActivity : AppCompatActivity() {
         setSecondaryInputEditTextHint("")
         setSecondaryInputEditTextVisibility(View.GONE)
 
-        clearSpinnerInput()
+        setSpinnerInputAdapter(null)
         setSpinnerInputVisibility(View.GONE)
 
         setSwitchInputCheckedState(false)
         setSwitchInputVisibility(View.GONE)
+
+        setProcessInputButtonText("")
+        setProcessInputButtonVisibility(View.GONE)
     }
 
     private fun setPrimaryInputEditTextHint(hint: String) {
@@ -169,12 +215,26 @@ class MainActivity : AppCompatActivity() {
         binding.secondaryInputEditText.visibility = visibility
     }
 
-    private fun clearSpinnerInput() {
-        binding.spinnerInput.adapter = null
+    private fun setSpinnerInputAdapter(arrayResourceId: Int) {
+        val arrayAdapter = ArrayAdapter.createFromResource(
+            this,
+            arrayResourceId,
+            android.R.layout.simple_spinner_item
+        )
+
+        setSpinnerInputAdapter(arrayAdapter)
+    }
+
+    private fun setSpinnerInputAdapter(arrayAdapter: ArrayAdapter<CharSequence>?) {
+        binding.spinnerInput.adapter = arrayAdapter
     }
 
     private fun setSpinnerInputVisibility(visibility: Int) {
         binding.spinnerInput.visibility = visibility
+    }
+
+    private fun setSwitchInputText(text: String) {
+        binding.switchInput.text = text
     }
 
     private fun setSwitchInputCheckedState(isChecked: Boolean) {
@@ -183,6 +243,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun setSwitchInputVisibility(visibility: Int) {
         binding.switchInput.visibility = visibility
+    }
+
+    private fun setProcessInputButtonText(text: String) {
+        binding.processInputBtn.text = text
+    }
+
+    private fun setProcessInputButtonVisibility(visibility: Int) {
+        binding.processInputBtn.visibility = visibility
     }
 
     private fun setSdkMethodsDropdown() {
