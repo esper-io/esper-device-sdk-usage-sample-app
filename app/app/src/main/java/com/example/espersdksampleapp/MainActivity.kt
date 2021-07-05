@@ -343,6 +343,42 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
+     * Method to Enable Wifi Tethering.
+     */
+    private fun enableWifiTethering() {
+        val primaryInputHint = getString(R.string.hotspot_name_input_prompt)
+        val secondaryInputHint = getString(R.string.password)
+
+        val buttonClickExecutor = OnClickListener {
+            val ssid = getPrimaryInputEditTextInput()
+            val password = getSecondaryInputEditTextInput()
+
+            // Enable the wifi tethering
+            sdk.enableWifiTethering(
+                ssid,
+                password,
+                true,
+                object : EsperDeviceSDK.Callback<String> {
+                    override fun onResponse(response: String?) {
+                        TODO("Not yet implemented")
+                    }
+
+                    override fun onFailure(throwable: Throwable) {
+                        Log.e(TAG, "enableWifiTethering: Failure occurred.", throwable)
+                    }
+                })
+        }
+
+        loadInputType(
+            TwoTextField(
+                primaryHint = primaryInputHint,
+                secondaryHint = secondaryInputHint,
+                buttonClickListener = buttonClickExecutor
+            )
+        )
+    }
+
+    /**
      * Method to Reboot the device.
      */
     private fun reboot() {
@@ -944,7 +980,7 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.clear_app_data) -> clearAppData()
                     getString(R.string.config_no_network_fallback) -> configNoNetworkFallback()
                     getString(R.string.enable_mobile_data) -> enableMobileData()
-                    getString(R.string.enable_wifi_tethering) -> TODO()
+                    getString(R.string.enable_wifi_tethering) -> enableWifiTethering()
                     getString(R.string.get_device_settings) -> TODO()
                     getString(R.string.get_esper_device_info) -> TODO()
                     getString(R.string.get_esper_removable_storage_path) -> TODO()
