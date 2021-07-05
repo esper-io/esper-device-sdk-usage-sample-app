@@ -127,6 +127,12 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    /*
+        ||===================================================================================||
+        ||------------------------- Esper Agent SDK Method(s) : START -----------------------||
+        ||===================================================================================||
+     */
+
     private fun activateSdk(token: String) {
         if (TextUtils.isEmpty(token)) {
             Log.e(TAG, "activateSdk: Activation token is empty")
@@ -810,6 +816,12 @@ class MainActivity : AppCompatActivity() {
 
         startActivity(intent)
     }
+
+    /*
+        ||===================================================================================||
+        ||------------------------- Esper Agent SDK Method(s) : END -------------------------||
+        ||===================================================================================||
+     */
 
     private fun loadInputType(inputType: InputType) {
         var buttonText = ""
