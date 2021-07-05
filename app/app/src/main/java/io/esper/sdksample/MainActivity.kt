@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter
 import android.widget.CompoundButton.OnCheckedChangeListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import io.esper.sdksample.provider.SampleJsonStringProvider
 import io.esper.devicesdk.EsperDeviceSDK
 import io.esper.devicesdk.constants.AppOpsPermissions
@@ -190,7 +191,6 @@ class MainActivity : AppCompatActivity() {
             sdk.addNewApnConfig(
                 object : EsperDeviceSDK.Callback<Int> {
                     override fun onResponse(response: Int?) {
-                        TODO("Not yet implemented")
                     }
 
                     override fun onFailure(throwable: Throwable) {
@@ -838,10 +838,25 @@ class MainActivity : AppCompatActivity() {
         ||===================================================================================||
      */
 
-    private fun showSdkMethodOutput(output: String) {
-        binding.apply {
-            sdkMethodOutput.text = output
-            outputContainer.visibility = View.VISIBLE
+    private fun showSdkMethodFailureOutput(throwable: Throwable) {
+        showSdkMethodOutput("Failure: $throwable}", true)
+    }
+
+    private fun showSdkMethodOutput(output: String, isFailure: Boolean = false) {
+        runOnUiThread {
+            binding.apply {
+                sdkMethodOutputTextView.text = output
+
+                val color = if (isFailure) {
+                    ContextCompat.getColor(this@MainActivity, R.color.red_failure)
+                } else {
+                    ContextCompat.getColor(this@MainActivity, R.color.green_success)
+                }
+
+                sdkMethodOutputTextView.setTextColor(color)
+
+                outputContainer.visibility = View.VISIBLE
+            }
         }
     }
 
