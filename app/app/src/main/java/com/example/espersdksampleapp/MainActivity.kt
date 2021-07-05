@@ -253,6 +253,10 @@ class MainActivity : AppCompatActivity() {
         binding.processInputBtn.visibility = visibility
     }
 
+    private fun setupSdkPlayground() {
+        setSdkMethodsDropdown()
+    }
+
     private fun setSdkMethodsDropdown() {
         val arrayAdapter = ArrayAdapter.createFromResource(
             this,
