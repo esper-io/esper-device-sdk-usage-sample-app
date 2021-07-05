@@ -258,11 +258,18 @@ class MainActivity : AppCompatActivity() {
                 appState,
                 object : EsperDeviceSDK.Callback<Boolean> {
                     override fun onResponse(response: Boolean?) {
-                        TODO("Not yet implemented")
+                        response?.let { isChanged ->
+                            val msg =
+                                if (isChanged) getString(R.string.app_state_change_success)
+                                else getString(R.string.app_state_change_failure)
+
+                            showSdkMethodOutput("onResponse: $msg")
+                        }
                     }
 
                     override fun onFailure(throwable: Throwable) {
                         Log.e(TAG, "changeAppState: Failed to change the app state.", throwable)
+                        showSdkMethodFailureOutput(throwable)
                     }
                 })
         }
