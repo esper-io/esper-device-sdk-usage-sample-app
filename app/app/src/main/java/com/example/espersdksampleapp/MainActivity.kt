@@ -158,6 +158,8 @@ class MainActivity : AppCompatActivity() {
         val sampleConfigJsonString = SampleJsonStringProvider.getSampleApnJsonConfigString()
 
         val buttonClickExecutor = OnClickListener {
+            val apnId = getPrimaryInputEditTextInput()
+
             // Add the new APN
             sdk.addNewApnConfig(
                 object : EsperDeviceSDK.Callback<Int> {
@@ -168,8 +170,7 @@ class MainActivity : AppCompatActivity() {
                     override fun onFailure(throwable: Throwable) {
                         Log.e(TAG, "addApn: Failed to add new apn.", throwable)
                     }
-
-                }, getPrimaryInputEditTextInput()
+                }, apnId
             )
         }
 
