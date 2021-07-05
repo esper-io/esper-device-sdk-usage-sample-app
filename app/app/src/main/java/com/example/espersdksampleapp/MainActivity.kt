@@ -449,6 +449,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
+     * Method to get the Esper Removable Storage Path.
+     */
+    private fun getEsperRemovableStoragePath() {
+        // Get the esper removable storage path
+        sdk.getEsperRemovableStorageCachePath(object : EsperDeviceSDK.Callback<String> {
+            override fun onResponse(response: String?) {
+                Log.d(TAG, "getEsperRemovableStoragePath: Successful. Path: $response")
+
+                // TODO("Show Result")
+
+                if (TextUtils.isEmpty(response)) return
+
+                TODO("Show Result")
+            }
+
+            override fun onFailure(throwable: Throwable) {
+                Log.e(TAG, "getEsperRemovableStoragePath: Failure occurred.", throwable)
+            }
+        })
+    }
+
+    /**
      * Method to Reboot the device.
      */
     private fun reboot() {
@@ -1089,7 +1111,7 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.enable_wifi_tethering) -> enableWifiTethering()
                     getString(R.string.get_device_settings) -> getDeviceSettings()
                     getString(R.string.get_esper_device_info) -> getEsperDeviceInfo()
-                    getString(R.string.get_esper_removable_storage_path) -> TODO()
+                    getString(R.string.get_esper_removable_storage_path) -> getEsperRemovableStoragePath()
                     getString(R.string.reboot) -> reboot()
                     getString(R.string.remove_apn) -> removeApn()
                     getString(R.string.set_app_op_mode) -> setAppOpMode()
