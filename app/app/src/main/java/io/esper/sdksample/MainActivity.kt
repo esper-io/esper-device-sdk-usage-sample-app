@@ -191,10 +191,12 @@ class MainActivity : AppCompatActivity() {
             sdk.addNewApnConfig(
                 object : EsperDeviceSDK.Callback<Int> {
                     override fun onResponse(response: Int?) {
+                        showSdkMethodOutput("onResponse: APN ID: $response")
                     }
 
                     override fun onFailure(throwable: Throwable) {
                         Log.e(TAG, "addApn: Failed to add new apn.", throwable)
+                        showSdkMethodFailureOutput(throwable)
                     }
                 }, apnId
             )
