@@ -452,8 +452,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadInputType(inputType: InputType) {
-        resetInputContainer()
-
         var buttonText = ""
 
         when (inputType) {
@@ -725,6 +723,9 @@ class MainActivity : AppCompatActivity() {
         private val sdkMethodList = resources.getStringArray(R.array.sdkMethods)
 
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            // Reset the input container
+            resetInputContainer()
+
             if (!isSelectedPositionValid(position)) {
                 Log.e(TAG, "onItemSelected: Invalid method index")
                 return
