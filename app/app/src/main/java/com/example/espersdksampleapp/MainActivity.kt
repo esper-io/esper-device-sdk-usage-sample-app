@@ -393,12 +393,28 @@ class MainActivity : AppCompatActivity() {
 
         // Set the system setting
         sdk.setSystemSetting(key, value, object : EsperDeviceSDK.Callback<Boolean> {
-            override fun onResponse(p0: Boolean?) {
+            override fun onResponse(response: Boolean?) {
                 TODO("Not yet implemented")
             }
 
             override fun onFailure(throwable: Throwable) {
                 Log.e(TAG, "setSystemSetting: Failed to set the system setting.", throwable)
+            }
+        })
+    }
+
+    /**
+     * Method to Show the Dock.
+     */
+    private fun showDock() {
+        // Show the dock
+        sdk.showDock(object : EsperDeviceSDK.Callback<Void> {
+            override fun onResponse(response: Void?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onFailure(throwable: Throwable) {
+                Log.e(TAG, "showDock: Failure occurred.", throwable)
             }
         })
     }
@@ -701,8 +717,8 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.set_default_apn) -> setDefaultApn()
                     getString(R.string.set_global_setting) -> setGlobalSetting()
                     getString(R.string.set_device_orientation) -> setDeviceOrientation()
-                    getString(R.string.set_system_setting) -> TODO()
-                    getString(R.string.show_dock) -> TODO()
+                    getString(R.string.set_system_setting) -> setSystemSetting()
+                    getString(R.string.show_dock) -> showDock()
                     getString(R.string.start_dock) -> TODO()
                     getString(R.string.stop_dock) -> TODO()
                     getString(R.string.update_apn) -> TODO()
