@@ -838,6 +838,13 @@ class MainActivity : AppCompatActivity() {
         ||===================================================================================||
      */
 
+    private fun showSdkMethodOutput(output: String) {
+        binding.apply {
+            sdkMethodOutput.text = output
+            outputContainer.visibility = View.VISIBLE
+        }
+    }
+
     private fun loadInputType(inputType: InputType) {
         var buttonText = ""
 
