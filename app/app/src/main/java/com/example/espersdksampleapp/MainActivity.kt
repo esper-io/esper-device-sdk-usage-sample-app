@@ -139,6 +139,52 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    private fun resetInputContainer() {
+        setPrimaryInputEditTextHint("")
+        setPrimaryInputEditTextVisibility(View.GONE)
+
+        setSecondaryInputEditTextHint("")
+        setSecondaryInputEditTextVisibility(View.GONE)
+
+        clearSpinnerInput()
+        setSpinnerInputVisibility(View.GONE)
+
+        setSwitchInputCheckedState(false)
+        setSwitchInputVisibility(View.GONE)
+    }
+
+    private fun setPrimaryInputEditTextHint(hint: String) {
+        binding.primaryInputEditText.hint = hint
+    }
+
+    private fun setPrimaryInputEditTextVisibility(visibility: Int) {
+        binding.primaryInputEditText.visibility = visibility
+    }
+
+    private fun setSecondaryInputEditTextHint(hint: String) {
+        binding.secondaryInputEditText.hint = hint
+    }
+
+    private fun setSecondaryInputEditTextVisibility(visibility: Int) {
+        binding.secondaryInputEditText.visibility = visibility
+    }
+
+    private fun clearSpinnerInput() {
+        binding.spinnerInput.adapter = null
+    }
+
+    private fun setSpinnerInputVisibility(visibility: Int) {
+        binding.spinnerInput.visibility = visibility
+    }
+
+    private fun setSwitchInputCheckedState(isChecked: Boolean) {
+        binding.switchInput.isChecked = isChecked
+    }
+
+    private fun setSwitchInputVisibility(visibility: Int) {
+        binding.switchInput.visibility = visibility
+    }
+
     private fun setSdkMethodsDropdown() {
         val arrayAdapter = ArrayAdapter.createFromResource(
             this,
