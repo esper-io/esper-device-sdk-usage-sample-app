@@ -302,12 +302,20 @@ class MainActivity : AppCompatActivity() {
             sdk.clearAppData(
                 packageArrayList,
                 object : EsperDeviceSDK.Callback<ArrayList<String?>?> {
-                    override fun onResponse(packageList: ArrayList<String?>?) {
-                        TODO("Not yet implemented")
+                    override fun onResponse(packageNameArrayList: ArrayList<String?>?) {
+                        packageNameArrayList?.let {
+                            val stringBuilder = StringBuilder("Failed to clear app data for:\n")
+                            for (packageName in packageNameArrayList) {
+                                stringBuilder.append("$packageName\n")
+                            }
+                            showSdkMethodOutput(stringBuilder.toString())
+                        }
+                            ?: showSdkMethodOutput("Successfully cleared app data for input packages.")
                     }
 
                     override fun onFailure(throwable: Throwable) {
                         Log.e(TAG, "clearAppData: Failure occurred.", throwable)
+                        showSdkMethodFailureOutput(throwable)
                     }
                 })
         }
