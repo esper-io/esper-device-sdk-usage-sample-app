@@ -184,9 +184,11 @@ class MainActivity : AppCompatActivity() {
 
             is TwoTextField -> {
                 inputType.primaryHint?.let { hint -> setPrimaryInputEditTextHint(hint) }
+                inputType.primaryText?.let { text -> setPrimaryInputEditText(text) }
                 setPrimaryInputEditTextVisibility(View.VISIBLE)
 
                 inputType.secondaryHint?.let { hint -> setSecondaryInputEditTextHint(hint) }
+                inputType.secondaryText?.let { text -> setSecondaryInputEditText(text) }
                 setSecondaryInputEditTextVisibility(View.VISIBLE)
             }
 
@@ -202,6 +204,7 @@ class MainActivity : AppCompatActivity() {
 
             is OneTextFieldOneSpinner -> {
                 inputType.primaryHint?.let { hint -> setPrimaryInputEditTextHint(hint) }
+                inputType.primaryText?.let { text -> setPrimaryInputEditText(text) }
                 setPrimaryInputEditTextVisibility(View.VISIBLE)
 
                 inputType.arrayResourceId?.let { resourceId -> setSpinnerInputAdapter(resourceId) }
@@ -248,6 +251,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun setSecondaryInputEditTextHint(hint: String) {
         binding.secondaryInputEditText.hint = hint
+    }
+
+    private fun setSecondaryInputEditText(text: String) {
+        binding.secondaryInputEditText.setText(text)
     }
 
     private fun setSecondaryInputEditTextVisibility(visibility: Int) {
