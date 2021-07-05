@@ -33,7 +33,7 @@ class OneTextField(
 class TwoTextField(
     primaryHint: String? = null,
     primaryText: String? = null,
-    secondaryHint2: String? = null,
+    secondaryHint: String? = null,
     secondaryText: String? = null,
     buttonText: String? = null,
     buttonClickListener: OnClickListener? = null
@@ -41,7 +41,7 @@ class TwoTextField(
     InputType(
         primaryHint = primaryHint,
         primaryText = primaryText,
-        secondaryHint = secondaryHint2,
+        secondaryHint = secondaryHint,
         secondaryText = secondaryText,
         buttonText = buttonText,
         buttonClickListener = buttonClickListener
