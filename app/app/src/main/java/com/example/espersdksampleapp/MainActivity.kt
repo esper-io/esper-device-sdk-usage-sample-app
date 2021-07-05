@@ -152,9 +152,9 @@ class MainActivity : AppCompatActivity() {
      */
     private fun addApn() {
         val inputHint = getString(R.string.apn_config_json_string)
-        val sampleInputText = SampleJsonStringProvider.getSampleApnJsonConfigString()
+        val sampleConfigJsonString = SampleJsonStringProvider.getSampleApnJsonConfigString()
 
-        val buttonClickListener = OnClickListener {
+        val buttonClickExecutor = OnClickListener {
             // Add the new APN
             sdk.addNewApnConfig(
                 object : EsperDeviceSDK.Callback<Int> {
@@ -172,9 +172,9 @@ class MainActivity : AppCompatActivity() {
 
         loadInputType(
             OneTextField(
-                inputHint,
-                sampleInputText,
-                buttonClickListener = buttonClickListener
+                hint = inputHint,
+                text = sampleConfigJsonString,
+                buttonClickListener = buttonClickExecutor
             )
         )
     }
@@ -186,7 +186,7 @@ class MainActivity : AppCompatActivity() {
         val inputHint = getString(R.string.enter_package_name)
         val arrayResourceId = R.array.appStates
 
-        val buttonClickListener = OnClickListener {
+        val buttonClickExecutor = OnClickListener {
             val packageName = getPrimaryInputEditTextInput()
             val appState = getSelectedItemFromSpinnerInput()
 
@@ -209,9 +209,9 @@ class MainActivity : AppCompatActivity() {
 
         loadInputType(
             OneTextFieldOneSpinner(
-                inputHint,
+                hint = inputHint,
                 arrayResourceId = arrayResourceId,
-                buttonClickListener = buttonClickListener
+                buttonClickListener = buttonClickExecutor
             )
         )
     }
@@ -221,9 +221,10 @@ class MainActivity : AppCompatActivity() {
      */
     private fun configNoNetworkFallback() {
         val inputHint = getString(R.string.no_network_fallback_config_json_string)
-        val sampleConfigJson = SampleJsonStringProvider.getSampleNoNetworkFallbackConfigJsonString()
+        val sampleConfigJsonString =
+            SampleJsonStringProvider.getSampleNoNetworkFallbackConfigJsonString()
 
-        val buttonClickListener = OnClickListener {
+        val buttonClickExecutor = OnClickListener {
             val inputConfigJson = getPrimaryInputEditTextInput()
 
             // Apply the given configuration
@@ -240,9 +241,9 @@ class MainActivity : AppCompatActivity() {
 
         loadInputType(
             OneTextField(
-                inputHint,
-                sampleConfigJson,
-                buttonClickListener = buttonClickListener
+                hint = inputHint,
+                text = sampleConfigJsonString,
+                buttonClickListener = buttonClickExecutor
             )
         )
     }
@@ -269,7 +270,7 @@ class MainActivity : AppCompatActivity() {
     private fun removeApn() {
         val inputHint = getString(R.string.apn_id)
 
-        val buttonClickListener = OnClickListener {
+        val buttonClickExecutor = OnClickListener {
             val apnId = getPrimaryInputEditTextInput()
 
             // Remove the apn config
@@ -286,8 +287,8 @@ class MainActivity : AppCompatActivity() {
 
         loadInputType(
             OneTextField(
-                inputHint,
-                buttonClickListener = buttonClickListener
+                hint = inputHint,
+                buttonClickListener = buttonClickExecutor
             )
         )
     }
@@ -298,7 +299,7 @@ class MainActivity : AppCompatActivity() {
     private fun setBrightness() {
         val inputHint = getString(R.string.brightness_scale)
 
-        val buttonClickListener = OnClickListener {
+        val buttonClickExecutor = OnClickListener {
             val scale = try {
                 val inputScale = getPrimaryInputEditTextInput()
                 Integer.parseInt(inputScale)
@@ -324,8 +325,8 @@ class MainActivity : AppCompatActivity() {
 
         loadInputType(
             OneTextField(
-                inputHint,
-                buttonClickListener = buttonClickListener
+                hint = inputHint,
+                buttonClickListener = buttonClickExecutor
             )
         )
     }
@@ -336,7 +337,7 @@ class MainActivity : AppCompatActivity() {
     private fun setDefaultApn() {
         val inputHint = getString(R.string.apn_id)
 
-        val buttonClickListener = OnClickListener {
+        val buttonClickExecutor = OnClickListener {
             val apnId = getPrimaryInputEditTextInput()
 
             // Set the default apn
@@ -353,8 +354,8 @@ class MainActivity : AppCompatActivity() {
 
         loadInputType(
             OneTextField(
-                inputHint,
-                buttonClickListener = buttonClickListener
+                hint = inputHint,
+                buttonClickListener = buttonClickExecutor
             )
         )
     }
@@ -384,7 +385,7 @@ class MainActivity : AppCompatActivity() {
     private fun setDeviceOrientation() {
         val arrayResourceId = R.array.orientations
 
-        val buttonClickListener = OnClickListener {
+        val buttonClickExecutor = OnClickListener {
             val orientation = getSelectedItemFromSpinnerInput()
 
             Log.d(TAG, "etDeviceOrientation: Selected orientation: $orientation")
@@ -407,8 +408,8 @@ class MainActivity : AppCompatActivity() {
 
         loadInputType(
             Spinner(
-                arrayResourceId,
-                buttonClickListener = buttonClickListener
+                arrayResourceId = arrayResourceId,
+                buttonClickListener = buttonClickExecutor
             )
         )
     }
@@ -490,7 +491,7 @@ class MainActivity : AppCompatActivity() {
 
         val secondaryInputHint = getString(R.string.apn_id)
 
-        val buttonClickListener = OnClickListener {
+        val buttonClickExecutor = OnClickListener {
             val apnConfigJsonString = getPrimaryInputEditTextInput()
             val apnId = getSecondaryInputEditTextInput()
 
@@ -513,7 +514,7 @@ class MainActivity : AppCompatActivity() {
                 primaryHint = primaryInputHint,
                 primaryText = primarySampleInputConfigJsonString,
                 secondaryHint = secondaryInputHint,
-                buttonClickListener = buttonClickListener
+                buttonClickListener = buttonClickExecutor
             )
         )
     }
@@ -526,7 +527,7 @@ class MainActivity : AppCompatActivity() {
         val sampleConfigJsonString =
             SampleJsonStringProvider.getSampleManagedAppConfigurationsJsonString()
 
-        val buttonClickListener = OnClickListener {
+        val buttonClickExecutor = OnClickListener {
             val configJsonString = getPrimaryInputEditTextInput()
 
             // Update the app configuration
@@ -547,7 +548,7 @@ class MainActivity : AppCompatActivity() {
             OneTextField(
                 hint = inputHint,
                 text = sampleConfigJsonString,
-                buttonClickListener = buttonClickListener
+                buttonClickListener = buttonClickExecutor
             )
         )
     }
