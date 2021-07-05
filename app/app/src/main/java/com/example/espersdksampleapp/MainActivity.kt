@@ -8,6 +8,7 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.CompoundButton.OnCheckedChangeListener
 import androidx.appcompat.app.AppCompatActivity
 import com.example.espersdksampleapp.databinding.ActivityMainNewBinding
 import com.example.espersdksampleapp.enum.*
@@ -175,6 +176,32 @@ class MainActivity : AppCompatActivity() {
                 hint = inputHint,
                 text = sampleConfigJsonString,
                 buttonClickListener = buttonClickExecutor
+            )
+        )
+    }
+
+    /**
+     * Method to Allow Power Off.
+     */
+    private fun allowPowerOff() {
+        val switchText = getString(R.string.power_button)
+
+        val onCheckedChangeExecutor = OnCheckedChangeListener { compoundButton, checked ->
+            sdk.allowPowerOff(checked, object : EsperDeviceSDK.Callback<Boolean> {
+                override fun onResponse(response: Boolean?) {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onFailure(throwable: Throwable) {
+                    Log.e(TAG, "allowPowerOff: Failure occurred.", throwable)
+                }
+            })
+        }
+
+        loadInputType(
+            Switch(
+                switchText = switchText,
+                switchCheckedChangeListener = onCheckedChangeExecutor
             )
         )
     }
@@ -586,6 +613,9 @@ class MainActivity : AppCompatActivity() {
 
             is Switch -> {
                 inputType.switchText?.let { text -> setSwitchInputText(text) }
+                inputType.switchCheckedChangeListener?.let { onCheckedChangeListener ->
+                    setSwitchInputOnCheckedChangeListener(onCheckedChangeListener)
+                }
                 setSwitchInputVisibility(View.VISIBLE)
             }
 
@@ -685,6 +715,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun setSwitchInputVisibility(visibility: Int) {
         binding.switchInput.visibility = visibility
+    }
+
+    private fun setSwitchInputOnCheckedChangeListener(onCheckedChangeListener: OnCheckedChangeListener) {
+        binding.switchInput.setOnCheckedChangeListener(onCheckedChangeListener)
     }
 
     private fun setProcessInputButtonText(text: String) {
@@ -838,7 +872,7 @@ class MainActivity : AppCompatActivity() {
             try {
                 when (sdkMethodList[position]) {
                     getString(R.string.add_apn) -> addApn()
-                    getString(R.string.allow_power_off) -> TODO()
+                    getString(R.string.allow_power_off) -> allowPowerOff()
                     getString(R.string.change_app_state) -> changeAppState()
                     getString(R.string.clear_app_data) -> TODO()
                     getString(R.string.config_no_network_fallback) -> configNoNetworkFallback()
