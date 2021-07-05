@@ -14,7 +14,6 @@ import android.widget.CompoundButton.OnCheckedChangeListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import io.esper.sdksample.provider.SampleJsonStringProvider
 import io.esper.devicesdk.EsperDeviceSDK
 import io.esper.devicesdk.constants.AppOpsPermissions
 import io.esper.devicesdk.exceptions.ActivationFailedException
@@ -22,12 +21,10 @@ import io.esper.devicesdk.models.EsperDeviceInfo
 import io.esper.devicesdk.utils.EsperSDKVersions
 import io.esper.sdksample.databinding.ActivityMainNewBinding
 import io.esper.sdksample.enum.*
+import io.esper.sdksample.provider.SampleJsonStringProvider
 import org.json.JSONObject
 import java.io.File
-import java.lang.NumberFormatException
-import java.lang.StringBuilder
 import java.util.*
-import kotlin.math.min
 
 class MainActivity : AppCompatActivity() {
 
