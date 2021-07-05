@@ -355,11 +355,12 @@ class MainActivity : AppCompatActivity() {
             // Enable the mobile data
             sdk.enableMobileData(checked, object : EsperDeviceSDK.Callback<Boolean> {
                 override fun onResponse(response: Boolean?) {
-                    TODO("Not yet implemented")
+                    showSdkMethodOutput("onResponse: $response")
                 }
 
                 override fun onFailure(throwable: Throwable) {
                     Log.e(TAG, "enableMobileData: Failure occurred.", throwable)
+                    showSdkMethodFailureOutput(throwable)
                 }
             })
         }
