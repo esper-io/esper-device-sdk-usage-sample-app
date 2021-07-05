@@ -31,6 +31,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var sdk: EsperDeviceSDK
 
+    private var isEsperAgentInstalled = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView()
@@ -52,6 +54,8 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
+        isEsperAgentInstalled = true
+
         setAndShowSdkInfoCard()
 
         setupSdkPlayground()
@@ -60,7 +64,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        if (this::sdk.isInitialized) {
+        if (isEsperAgentInstalled && this::sdk.isInitialized) {
             // Initiate the check whether Esper SDK activated or not
             initEsperSDKActivationCheck()
         }
