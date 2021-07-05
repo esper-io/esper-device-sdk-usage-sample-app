@@ -149,7 +149,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Method to add apn.
+     * Method to Add Apn.
      */
     private fun addApn() {
         val inputHint = getString(R.string.apn_config_json_string)
@@ -181,7 +181,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Method to change the app state.
+     * Method to Change the App State.
      */
     private fun changeAppState() {
         val inputHint = getString(R.string.enter_package_name)
@@ -218,7 +218,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Method to configure no network fallback.
+     * Method to Configure No Network Fallback.
      */
     private fun configNoNetworkFallback() {
         val inputHint = getString(R.string.no_network_fallback_config_json_string)
@@ -249,7 +249,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Method to reboot the device.
+     * Method to Reboot the device.
      */
     private fun reboot() {
         // Reboot the device
@@ -265,7 +265,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Method to set the screen brightness.
+     * Method to set the Screen Brightness.
      */
     private fun setBrightness() {
         val inputHint = getString(R.string.brightness_scale)
@@ -303,7 +303,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Method to set the default apn.
+     * Method to set the Default Apn.
      */
     private fun setDefaultApn() {
         val inputHint = getString(R.string.apn_id)
@@ -329,6 +329,24 @@ class MainActivity : AppCompatActivity() {
                 buttonClickListener = buttonClickListener
             )
         )
+    }
+
+    /**
+     * Method to set the Global Setting.
+     */
+    private fun setGlobalSetting() {
+        val key = "adb_enabled"
+        val value = "false"
+
+        sdk.setGlobalSetting(key, value, object : EsperDeviceSDK.Callback<Boolean> {
+            override fun onResponse(response: Boolean?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onFailure(throwable: Throwable) {
+                Log.e(TAG, "setGlobalSetting: Failed to set the global setting.", throwable)
+            }
+        })
     }
 
     private fun loadInputType(inputType: InputType) {
@@ -627,7 +645,7 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.set_app_op_mode) -> TODO()
                     getString(R.string.set_brightness) -> setBrightness()
                     getString(R.string.set_default_apn) -> setDefaultApn()
-                    getString(R.string.set_global_setting) -> TODO()
+                    getString(R.string.set_global_setting) -> setGlobalSetting()
                     getString(R.string.set_orientation) -> TODO()
                     getString(R.string.set_system_setting) -> TODO()
                     getString(R.string.show_dock) -> TODO()
