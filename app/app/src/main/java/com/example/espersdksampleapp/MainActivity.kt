@@ -16,7 +16,6 @@ import io.esper.devicesdk.EsperDeviceSDK
 import io.esper.devicesdk.exceptions.ActivationFailedException
 import io.esper.devicesdk.utils.EsperSDKVersions
 import java.lang.NumberFormatException
-import java.util.function.ToDoubleBiFunction
 
 class MainActivity : AppCompatActivity() {
 
@@ -349,6 +348,41 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * Method to set the device orientation.
+     */
+    private fun setDeviceOrientation() {
+        val arrayResourceId = R.array.orientations
+
+        val buttonClickListener = OnClickListener {
+            val orientation = getSelectedItemFromSpinnerInput()
+
+            Log.d(TAG, "etDeviceOrientation: Selected orientation: $orientation")
+
+            if (TextUtils.isEmpty(orientation)) {
+                return@OnClickListener
+            }
+
+            // Set the device orientation
+            sdk.setDeviceOrientation(orientation, object : EsperDeviceSDK.Callback<Boolean> {
+                override fun onResponse(response: Boolean?) {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onFailure(throwable: Throwable) {
+                    Log.e(TAG, "setDeviceOrientation: Failure occurred.", throwable)
+                }
+            })
+        }
+
+        loadInputType(
+            Spinner(
+                arrayResourceId,
+                buttonClickListener = buttonClickListener
+            )
+        )
+    }
+
     private fun loadInputType(inputType: InputType) {
         resetInputContainer()
 
@@ -646,7 +680,7 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.set_brightness) -> setBrightness()
                     getString(R.string.set_default_apn) -> setDefaultApn()
                     getString(R.string.set_global_setting) -> setGlobalSetting()
-                    getString(R.string.set_orientation) -> TODO()
+                    getString(R.string.set_device_orientation) -> setDeviceOrientation()
                     getString(R.string.set_system_setting) -> TODO()
                     getString(R.string.show_dock) -> TODO()
                     getString(R.string.start_dock) -> TODO()
