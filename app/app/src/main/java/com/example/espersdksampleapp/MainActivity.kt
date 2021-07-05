@@ -302,6 +302,35 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    /**
+     * Method to set the default apn.
+     */
+    private fun setDefaultApn() {
+        val inputHint = getString(R.string.apn_id)
+
+        val buttonClickListener = OnClickListener {
+            val apnId = getPrimaryInputEditTextInput()
+
+            // Set the default apn
+            sdk.setDefaultApn(object : EsperDeviceSDK.Callback<Int> {
+                override fun onResponse(response: Int?) {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onFailure(throwable: Throwable) {
+                    Log.e(TAG, "setDefaultApn: Failure.", throwable)
+                }
+            }, apnId)
+        }
+
+        loadInputType(
+            OneTextField(
+                inputHint,
+                buttonClickListener = buttonClickListener
+            )
+        )
+    }
+
     private fun loadInputType(inputType: InputType) {
         resetInputContainer()
 
@@ -597,7 +626,7 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.remove_apn) -> TODO()
                     getString(R.string.set_app_op_mode) -> TODO()
                     getString(R.string.set_brightness) -> setBrightness()
-                    getString(R.string.set_default_apn) -> TODO()
+                    getString(R.string.set_default_apn) -> setDefaultApn()
                     getString(R.string.set_global_setting) -> TODO()
                     getString(R.string.set_orientation) -> TODO()
                     getString(R.string.set_system_setting) -> TODO()
