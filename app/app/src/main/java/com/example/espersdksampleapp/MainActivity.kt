@@ -18,6 +18,7 @@ import com.example.espersdksampleapp.provider.SampleJsonStringProvider
 import io.esper.devicesdk.EsperDeviceSDK
 import io.esper.devicesdk.constants.AppOpsPermissions
 import io.esper.devicesdk.exceptions.ActivationFailedException
+import io.esper.devicesdk.models.EsperDeviceInfo
 import io.esper.devicesdk.utils.EsperSDKVersions
 import org.json.JSONObject
 import java.lang.NumberFormatException
@@ -408,6 +409,41 @@ class MainActivity : AppCompatActivity() {
 
             override fun onFailure(throwable: Throwable) {
                 Log.e(TAG, "getDeviceSettings: Failure occurred.", throwable)
+            }
+        })
+    }
+
+    /**
+     * Method to get the Esper Device Info.
+     */
+    private fun getEsperDeviceInfo() {
+        // Get the esper device info
+        sdk.getEsperDeviceInfo(object : EsperDeviceSDK.Callback<EsperDeviceInfo> {
+            override fun onResponse(esperDeviceInfo: EsperDeviceInfo?) {
+                if (esperDeviceInfo == null) {
+                    TODO("Show Error")
+                    return
+                }
+
+                val deviceInfoBuilder = StringBuilder("Device Id: " + esperDeviceInfo.deviceId)
+
+                if (sdk.apiLevel >= EsperSDKVersions.TESSARION_MR2) {
+                    /*
+                        This check is made because this application may run on a device that has
+                        old Esper Agent which has device SDK older than EsperSDKVersions.TESSARION_MR2
+                     */
+
+                    deviceInfoBuilder
+                        .append("\nSerial Number: ${esperDeviceInfo.serialNo}")
+                        .append("\nIMEI1: ${esperDeviceInfo.imei1}")
+                        .append("\nIMEI2: ${esperDeviceInfo.imei2}")
+                }
+
+                TODO("Show Result")
+            }
+
+            override fun onFailure(throwable: Throwable) {
+                Log.e(TAG, "getEsperDeviceInfo: Failure occurred.", throwable)
             }
         })
     }
@@ -1052,7 +1088,7 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.enable_mobile_data) -> enableMobileData()
                     getString(R.string.enable_wifi_tethering) -> enableWifiTethering()
                     getString(R.string.get_device_settings) -> getDeviceSettings()
-                    getString(R.string.get_esper_device_info) -> TODO()
+                    getString(R.string.get_esper_device_info) -> getEsperDeviceInfo()
                     getString(R.string.get_esper_removable_storage_path) -> TODO()
                     getString(R.string.reboot) -> reboot()
                     getString(R.string.remove_apn) -> removeApn()
