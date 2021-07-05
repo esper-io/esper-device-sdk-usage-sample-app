@@ -1,6 +1,7 @@
 package com.example.espersdksampleapp
 
 import android.content.res.Resources
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -17,6 +18,7 @@ import io.esper.devicesdk.EsperDeviceSDK
 import io.esper.devicesdk.exceptions.ActivationFailedException
 import io.esper.devicesdk.utils.EsperSDKVersions
 import java.lang.NumberFormatException
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -187,6 +189,7 @@ class MainActivity : AppCompatActivity() {
         val switchText = getString(R.string.power_button)
 
         val onCheckedChangeExecutor = OnCheckedChangeListener { compoundButton, checked ->
+            // Allow power off
             sdk.allowPowerOff(checked, object : EsperDeviceSDK.Callback<Boolean> {
                 override fun onResponse(response: Boolean?) {
                     TODO("Not yet implemented")
@@ -238,6 +241,43 @@ class MainActivity : AppCompatActivity() {
             OneTextFieldOneSpinner(
                 hint = inputHint,
                 arrayResourceId = arrayResourceId,
+                buttonClickListener = buttonClickExecutor
+            )
+        )
+    }
+
+    /**
+     * Method to Clear App Data.
+     */
+    private fun clearAppData() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return
+        }
+
+        val inputHint = getString(R.string.clear_app_data_input_prompt)
+
+        val buttonClickExecutor = OnClickListener {
+            val input = getPrimaryInputEditTextInput()
+            val packageList = input.split("\n").toTypedArray()
+            val packageArrayList = ArrayList(listOf(*packageList))
+
+            // Clear app data
+            sdk.clearAppData(
+                packageArrayList,
+                object : EsperDeviceSDK.Callback<ArrayList<String?>?> {
+                    override fun onResponse(packageList: ArrayList<String?>?) {
+                        TODO("Not yet implemented")
+                    }
+
+                    override fun onFailure(throwable: Throwable) {
+                        Log.e(TAG, "clearAppData: Failure occurred.", throwable)
+                    }
+                })
+        }
+
+        loadInputType(
+            OneTextField(
+                hint = inputHint,
                 buttonClickListener = buttonClickExecutor
             )
         )
@@ -874,7 +914,7 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.add_apn) -> addApn()
                     getString(R.string.allow_power_off) -> allowPowerOff()
                     getString(R.string.change_app_state) -> changeAppState()
-                    getString(R.string.clear_app_data) -> TODO()
+                    getString(R.string.clear_app_data) -> clearAppData()
                     getString(R.string.config_no_network_fallback) -> configNoNetworkFallback()
                     getString(R.string.enable_mobile_data) -> TODO()
                     getString(R.string.enable_wifi_tethering) -> TODO()
