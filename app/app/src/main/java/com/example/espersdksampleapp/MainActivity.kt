@@ -419,6 +419,22 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * Method to Start the Dock.
+     */
+    private fun startDock() {
+        // Start the dock
+        sdk.startDock(object : EsperDeviceSDK.Callback<Void> {
+            override fun onResponse(p0: Void?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onFailure(throwable: Throwable) {
+                Log.e(TAG, "startDock: Failure occurred.", throwable)
+            }
+        })
+    }
+
     private fun loadInputType(inputType: InputType) {
         resetInputContainer()
 
@@ -719,7 +735,7 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.set_device_orientation) -> setDeviceOrientation()
                     getString(R.string.set_system_setting) -> setSystemSetting()
                     getString(R.string.show_dock) -> showDock()
-                    getString(R.string.start_dock) -> TODO()
+                    getString(R.string.start_dock) -> startDock()
                     getString(R.string.stop_dock) -> TODO()
                     getString(R.string.update_apn) -> TODO()
                     getString(R.string.update_app_configurations) -> TODO()
