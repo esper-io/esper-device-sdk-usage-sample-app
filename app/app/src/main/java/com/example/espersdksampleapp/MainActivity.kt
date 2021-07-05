@@ -316,6 +316,33 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
+     * Method to Enable Mobile Data.
+     */
+    private fun enableMobileData() {
+        val switchText = getString(R.string.mobile_data)
+
+        val onCheckedChangeExecutor = OnCheckedChangeListener { compoundButton, checked ->
+            // Enable the mobile data
+            sdk.enableMobileData(checked, object : EsperDeviceSDK.Callback<Boolean> {
+                override fun onResponse(response: Boolean?) {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onFailure(throwable: Throwable) {
+                    Log.e(TAG, "enableMobileData: Failure occurred.", throwable)
+                }
+            })
+        }
+
+        loadInputType(
+            Switch(
+                switchText = switchText,
+                switchCheckedChangeListener = onCheckedChangeExecutor
+            )
+        )
+    }
+
+    /**
      * Method to Reboot the device.
      */
     private fun reboot() {
@@ -916,7 +943,7 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.change_app_state) -> changeAppState()
                     getString(R.string.clear_app_data) -> clearAppData()
                     getString(R.string.config_no_network_fallback) -> configNoNetworkFallback()
-                    getString(R.string.enable_mobile_data) -> TODO()
+                    getString(R.string.enable_mobile_data) -> enableMobileData()
                     getString(R.string.enable_wifi_tethering) -> TODO()
                     getString(R.string.get_device_settings) -> TODO()
                     getString(R.string.get_esper_device_info) -> TODO()
