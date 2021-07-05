@@ -1,4 +1,4 @@
-package com.example.espersdksampleapp
+package io.esper.sdksample
 
 import org.junit.Test
 

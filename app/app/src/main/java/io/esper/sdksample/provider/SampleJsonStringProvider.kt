@@ -1,4 +1,4 @@
-package com.example.espersdksampleapp.provider
+package io.esper.sdksample.provider
 
 import android.provider.Telephony
 import android.util.Log

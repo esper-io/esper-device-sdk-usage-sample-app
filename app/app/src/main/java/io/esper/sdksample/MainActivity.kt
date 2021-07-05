@@ -1,4 +1,4 @@
-package com.example.espersdksampleapp
+package io.esper.sdksample
 
 import android.content.res.Resources
 import android.os.Build
@@ -12,14 +12,14 @@ import android.widget.ArrayAdapter
 import android.widget.CompoundButton.OnCheckedChangeListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.espersdksampleapp.databinding.ActivityMainNewBinding
-import com.example.espersdksampleapp.enum.*
-import com.example.espersdksampleapp.provider.SampleJsonStringProvider
+import io.esper.sdksample.provider.SampleJsonStringProvider
 import io.esper.devicesdk.EsperDeviceSDK
 import io.esper.devicesdk.constants.AppOpsPermissions
 import io.esper.devicesdk.exceptions.ActivationFailedException
 import io.esper.devicesdk.models.EsperDeviceInfo
 import io.esper.devicesdk.utils.EsperSDKVersions
+import io.esper.sdksample.databinding.ActivityMainNewBinding
+import io.esper.sdksample.enum.*
 import org.json.JSONObject
 import java.lang.NumberFormatException
 import java.lang.StringBuilder

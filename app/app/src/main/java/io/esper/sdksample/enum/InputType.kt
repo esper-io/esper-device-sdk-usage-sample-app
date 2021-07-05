@@ -1,4 +1,4 @@
-package com.example.espersdksampleapp.enum
+package io.esper.sdksample.enum
 
 import android.view.View.OnClickListener
 import android.widget.CompoundButton.OnCheckedChangeListener
