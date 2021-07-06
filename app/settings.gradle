@@ -1,0 +1,2 @@
+rootProject.name = "Esper SDK Sample App"
+include ':app'
