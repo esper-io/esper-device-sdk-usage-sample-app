@@ -36,13 +36,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView()
 
-        setShowActivateSdkCardButtonClickListener()
-        setActivateSdkCardButtonClickListener()
-
         // Get the instance of the Esper SDK
         sdk = EsperDeviceSDK.getInstance(applicationContext)
-
-        setupSdkPlayground()
 
         /*
             NOTE: For Esper SDK to be functional,
@@ -53,8 +48,6 @@ class MainActivity : AppCompatActivity() {
             setAndShowSdkInfoCard(getString(R.string.esper_agent_not_found))
             return
         }
-
-        setAndShowSdkInfoCard()
 
         setupSdkPlayground()
     }
@@ -959,6 +952,8 @@ class MainActivity : AppCompatActivity() {
             inputType.buttonClickListener?.let { setProcessInputButtonClickListener(it) }
             setProcessInputButtonVisibility(View.VISIBLE)
         }
+
+        binding.inputContainer.visibility = View.VISIBLE
     }
 
     private fun resetInputContainer() {
@@ -1073,7 +1068,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupSdkPlayground() {
+        setAndShowSdkInfoCard()
+
+        setShowActivateSdkCardButtonClickListener()
+        setActivateSdkCardButtonClickListener()
+
         setSdkMethodsDropdown()
+
+        binding.sdkPlaygroundContainer.visibility = View.VISIBLE
     }
 
     private fun setSdkMethodsDropdown() {
