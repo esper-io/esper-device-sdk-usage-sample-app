@@ -50,6 +50,7 @@ class MainActivity : AppCompatActivity() {
          */
         if (!isEsperAgentInstalled()) {
             Log.e(TAG, "onCreate: Error:: Esper Agent Not Found")
+            setAndShowSdkInfoCard(getString(R.string.esper_agent_not_found))
             return
         }
 
@@ -1055,11 +1056,11 @@ class MainActivity : AppCompatActivity() {
         binding.processInputBtn.setOnClickListener(onClickListener)
     }
 
-    private fun setAndShowSdkInfoCard() {
+    private fun setAndShowSdkInfoCard(message: String? = null) {
         val esperAgentDeviceSdkApiLevel = sdk.apiLevel
         val esperAgentDeviceSdkReleaseName = sdk.apiReleaseName
 
-        val sdkInfo = String.format(
+        val sdkInfo = message ?: String.format(
             getString(R.string.api_level_prefix),
             esperAgentDeviceSdkApiLevel,
             esperAgentDeviceSdkReleaseName
