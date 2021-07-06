@@ -873,6 +873,13 @@ class MainActivity : AppCompatActivity() {
         ||===================================================================================||
      */
 
+    private fun resetOutputContainer() {
+        binding.apply {
+            sdkMethodOutputTextView.text = ""
+            outputContainer.visibility = View.GONE
+        }
+    }
+
     private fun showSdkMethodFailureOutput(throwable: Throwable) {
         showSdkMethodOutput("Failure: $throwable}", true)
     }
@@ -1192,6 +1199,9 @@ class MainActivity : AppCompatActivity() {
         private val sdkMethodList = resources.getStringArray(R.array.sdkMethods)
 
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            // Reset the output container
+            resetOutputContainer()
+
             // Reset the input container
             resetInputContainer()
 
