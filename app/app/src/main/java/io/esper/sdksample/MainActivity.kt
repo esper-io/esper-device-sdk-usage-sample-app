@@ -1068,6 +1068,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupSdkPlayground() {
+        setSdkActivationStatusCardVisibility(View.VISIBLE)
+
         setAndShowSdkInfoCard()
 
         setShowActivateSdkCardButtonClickListener()
