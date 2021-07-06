@@ -19,7 +19,7 @@ import io.esper.devicesdk.constants.AppOpsPermissions
 import io.esper.devicesdk.exceptions.ActivationFailedException
 import io.esper.devicesdk.models.EsperDeviceInfo
 import io.esper.devicesdk.utils.EsperSDKVersions
-import io.esper.sdksample.databinding.ActivityMainNewBinding
+import io.esper.sdksample.databinding.ActivityMainBinding
 import io.esper.sdksample.enum.*
 import io.esper.sdksample.provider.SampleJsonStringProvider
 import org.json.JSONObject
@@ -28,7 +28,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainNewBinding
+    private lateinit var binding: ActivityMainBinding
 
     private lateinit var sdk: EsperDeviceSDK
 
@@ -1189,7 +1189,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setContentView() {
-        binding = ActivityMainNewBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
     }
