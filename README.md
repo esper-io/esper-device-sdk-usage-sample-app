@@ -4,52 +4,52 @@ A sample app to demonstrate various APIs offered by Esper Agent Device SDK.
 
 ## **Using the Application**
 
-[1. Activating the SDK](#activating-the-sdk)<br/>
-[2. Exploring the SDK APIs](#exploring-the-sdk-apis)<br/>
-[3. Note](#note)<br/>
-[4. Reference Links](#reference-links)
+[> Activating the SDK](#activating-the-sdk)<br/>
+[> Exploring the SDK APIs](#exploring-the-sdk-apis)<br/>
+[> Note](#note)<br/>
+[> Reference Links](#reference-links)
 
 ### Activating the SDK
 ```Markdown
 Step 1: Generate an activation API-Token
-          - To generate the token:
-              1. Log in to your endpoint
-              2. Go to "API Key Management" section
+	- To generate the token:
+		1. Log in to your endpoint
+		2. Go to "API Key Management" section
 ```
 
 ```Markdown
 Step 2: Open the app
 ```
 <p align="center">
-<img src="https://user-images.githubusercontent.com/33399786/126083254-2f09249c-1347-4788-8823-caf678e0054f.png" height="500px"/>
+<img src="https://user-images.githubusercontent.com/33399786/126111947-c5322990-2cfb-4c83-b0e1-91f2046787f4.png" height="500px"/>
 </p>
 
 ```Markdown
 STEP 3: Click "Activate" button
 ```
 <p align="center">
-<img src="https://user-images.githubusercontent.com/33399786/126083474-70154f47-a559-4e58-8b22-b9281132c33a.png" height="500px"/>
+<img src="https://user-images.githubusercontent.com/33399786/126112070-9e14faa6-10e4-45f3-997d-8fdb30363042.png" height="500px"/>
 </p>
 
 ```Markdown
 STEP 4: Enter the SDK activation token
 ```
 <p align="center">
-<img src="https://user-images.githubusercontent.com/33399786/126083598-883cc4e6-5622-46a2-83aa-43137faa0e97.png" height="500px"/>
+<img src="https://user-images.githubusercontent.com/33399786/126112146-5de50000-a785-40f3-81c2-4a6bf48058c5.png" height="500px"/>
 </p>
 
 ```Markdown
 STEP 5: Click "Activate" button
 ```
 <p align="center">
-<img src="https://user-images.githubusercontent.com/33399786/126083631-4da2aeb1-c2fd-4e0c-bf8d-c9d23875913c.png" height="500px"/>
+<img src="https://user-images.githubusercontent.com/33399786/126112215-2febf24a-2f55-4b4f-a05b-035f790fc611.png" height="500px"/>
 </p>
 
 ```Markdown
 STEP 6: If the token is valid, then SDK gets activated ✅  { SDK APIs are now functional 😃 }
 ```
 <p align="center">
-<img src="https://user-images.githubusercontent.com/33399786/126083704-14a91a07-81c4-43be-bf53-aa847b3c9692.png" height="500px"/>
+<img src="https://user-images.githubusercontent.com/33399786/126112281-1d789657-7591-47b8-85d1-6d1e7e2b3e30.png" height="500px"/>
 </p>
 
 <br/>
@@ -58,8 +58,9 @@ STEP 6: If the token is valid, then SDK gets activated ✅  { SDK APIs are now f
 ```Markdown
 STEP 1: Make sure SDK is activated ✅  { Otherwise SDK APIs won't be functional 🙁 }
 ```
+> To learn about activating the sdk, go to: [Activating the SDK](#activating-the-sdk)
 <p align="center">
-<img src="https://user-images.githubusercontent.com/33399786/126083704-14a91a07-81c4-43be-bf53-aa847b3c9692.png" height="500px"/>
+<img src="https://user-images.githubusercontent.com/33399786/126112281-1d789657-7591-47b8-85d1-6d1e7e2b3e30.png" height="500px"/>
 </p>
 
 
@@ -67,16 +68,15 @@ STEP 1: Make sure SDK is activated ✅  { Otherwise SDK APIs won't be functional
 STEP 2: Click on the "Please select Esper Device SDK method" dropdown
 ```
 <p align="center">
-<img src="https://user-images.githubusercontent.com/33399786/126084134-fc0d7e8a-eab1-4e7a-a931-3e35664580e7.png" height="500px"/>
+<img src="https://user-images.githubusercontent.com/33399786/126112388-c68bc7cd-b588-4e72-b081-a1feb87578c7.png" height="500px"/>
 </p>
 
 ```Markdown
 STEP 3: Select the required SDK method
 ```
 <p align="center">
-<img src="https://user-images.githubusercontent.com/33399786/126084213-fae9b11c-7ce6-4ff6-b512-f9ba839ba335.png" height="500px"/>
+<img src="https://user-images.githubusercontent.com/33399786/126112410-b9a2a800-6189-4623-bb08-1cfa554fda56.png" height="500px"/>
 </p>
-
 
 ### NOTE
 ```Markdown
@@ -85,7 +85,7 @@ STEP 3: Select the required SDK method
 If Esper Agent is not installed then below screen will be observed:
 ```
 <p align="center">
-<img src="https://user-images.githubusercontent.com/33399786/126084412-0ad85e26-1f45-4b0c-a3b1-fcd5a5380349.png" height="500px"/>
+<img src="https://user-images.githubusercontent.com/33399786/126112545-9a9b3111-98c8-4fb0-ba02-0b433ca36fe4.png" height="500px"/>
 </p>
 
 ### Reference Links
