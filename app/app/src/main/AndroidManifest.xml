@@ -7,6 +7,10 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <queries>
+        <package android:name="io.shoonya.shoonyadpc" />
+    </queries>
+
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
