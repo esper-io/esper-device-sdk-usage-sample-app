@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <!-- (For Android 11 and above) To enable the package visibility of Esper Agent -->
     <queries>
         <package android:name="io.shoonya.shoonyadpc" />
     </queries>
