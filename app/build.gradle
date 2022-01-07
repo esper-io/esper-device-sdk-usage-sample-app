@@ -5,7 +5,7 @@ buildscript {
 
         constraint_layout_version = "2.0.4"
 
-        esper_sdk_version = "2.0.8604.14"
+        esper_sdk_version = "2.1.2851.18"
 
         gradle_version = "4.2.1"
 
