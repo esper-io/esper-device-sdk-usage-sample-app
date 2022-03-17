@@ -58,7 +58,7 @@ pipeline
             steps {
                 script {
                     sh 'ls -la'
-                    g_utils = load './jenkins/Utils.groovy'
+                    g_utils=load './jenkins/Utils.groovy'
                     g_releaseChannel = g_BranchToReleaseTypeMap[env.BRANCH_NAME] ?: 'alpha'
                     time_stamp = new Date().format('yyyyMMddHHmm')
                     g_buildNumber = [g_releaseChannel, time_stamp].join('-')
