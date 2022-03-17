@@ -57,6 +57,7 @@ pipeline
         stage('Initialize') {
             steps {
                 script {
+                    checkout(scm)
                     sh 'ls -la jenkins/'
                     g_utils = load './jenkins/Utils.groovy'
                     g_releaseChannel = g_BranchToReleaseTypeMap[env.BRANCH_NAME] ?: 'alpha'
