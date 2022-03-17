@@ -43,7 +43,7 @@ import groovy.json.JsonSlurperClassic
 @Field def ShoonyDpcPublisherS3Bucket = 'shoonya-dpc'
 @Field def JenkinsCloudApiAccessCreds = 'jenkins_cloud_api_access_creds'
 @Field def releaseBranch = 'master'
-@Field def g_utils = ''
+@Field def helperMethods = ''
 @Field def g_releaseChannel = ''
 @Field def g_buildNumber = ''
 
@@ -59,11 +59,11 @@ pipeline
                 script {
                     checkout(scm)
                     sh 'ls -la jenkins/'
-                    g_utils = load './jenkins/Utils.groovy'
+                    helperMethods = load './jenkins/Utils.groovy'
                     g_releaseChannel = g_BranchToReleaseTypeMap[env.BRANCH_NAME] ?: 'alpha'
                     time_stamp = new Date().format('yyyyMMddHHmm')
                     g_buildNumber = [g_releaseChannel, time_stamp].join('-')
-                    echo "Build_Number: ${g_buildNumber}: ${g_utils}"
+                    echo "Build_Number: ${g_buildNumber}"
                 }
             }
         }
@@ -118,8 +118,7 @@ pipeline
                         g_DpcVersionBuildNumber = "2"
                         echo "Version_name: ${g_DpcVersionBuildNumber}"
                         // let the builder library build the code and archive it
-                        echo "${g_utils}"
-                        g_utils.buildApps(g_DpcVersionBuildNumber,g_releaseChannel)
+                        helperMethods.buildApps(g_DpcVersionBuildNumber,g_releaseChannel)
                     }
                 }
             }
