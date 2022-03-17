@@ -62,7 +62,7 @@ pipeline
                     g_releaseChannel = g_BranchToReleaseTypeMap[env.BRANCH_NAME] ?: 'alpha'
                     time_stamp = new Date().format('yyyyMMddHHmm')
                     g_buildNumber = [g_releaseChannel, time_stamp].join('-')
-                    echo "Build_Number: ${g_buildNumber}"
+                    echo "Build_Number: ${g_buildNumber}: ${g_utils}"
                 }
             }
         }
@@ -117,6 +117,7 @@ pipeline
                         g_DpcVersionBuildNumber = "${buildJob.number}"
                         echo "Version_name: ${g_DpcVersionBuildNumber}"
                         // let the builder library build the code and archive it
+                        echo "${g_utils}"
                         g_utils.buildApps(g_DpcVersionBuildNumber,g_releaseChannel)
                     }
                 }
