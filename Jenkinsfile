@@ -43,6 +43,9 @@ import groovy.json.JsonSlurperClassic
 @Field def ShoonyDpcPublisherS3Bucket = 'shoonya-dpc'
 @Field def JenkinsCloudApiAccessCreds = 'jenkins_cloud_api_access_creds'
 @Field def releaseBranch = 'master'
+@Field def g_utils = ''
+@Field def g_releaseChannel = ''
+@Field def g_buildNumber = ''
 
 pipeline
 {
@@ -133,7 +136,7 @@ pipeline
                 timestamps {
                     script {
                         sh "ls -al"
-                        g_buildPathS3 = g_releaseChannel
+                        def g_buildPathS3 = g_releaseChannel
                         sh "ls -al app/"
                         def buildPathS3 = "sampleapp/"+ g_buildPathS3
                         def jsonData = readJSON file: 'app/build-output-pg-enabled/outputs/apk/release/output-metadata.json'
