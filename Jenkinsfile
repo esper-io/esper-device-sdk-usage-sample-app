@@ -46,7 +46,7 @@ import groovy.json.JsonSlurperClassic
 @Field def helperMethods = ''
 @Field def g_releaseChannel = ''
 @Field def g_buildNumber = ''
-@Field def sampleutils = ''
+
 pipeline
 {
     agent {
@@ -60,7 +60,6 @@ pipeline
                     checkout(scm)
                     sh 'ls -la jenkins/'
                     helperMethods = load './jenkins/Utils.groovy'
-                    sampleutils = load('./jenkins/sample.groovy')
                     g_releaseChannel = g_BranchToReleaseTypeMap[env.BRANCH_NAME] ?: 'alpha'
                     time_stamp = new Date().format('yyyyMMddHHmm')
                     g_buildNumber = [g_releaseChannel, time_stamp].join('-')
@@ -118,6 +117,7 @@ pipeline
                         //def buildJob = build (job: 'DeviceBuilds/sampleapp-versions', propagate: true)
                         g_DpcVersionBuildNumber = "2"
                         echo "Version_name: ${g_DpcVersionBuildNumber}"
+                        sampleutils = load('./jenkins/sample.groovy')
                         sampleutils.test()
                         // let the builder library build the code and archive it
                         helperMethods.buildApps(g_DpcVersionBuildNumber,g_releaseChannel)
