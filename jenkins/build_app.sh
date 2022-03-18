@@ -17,6 +17,7 @@ popd
 mv ~/.gradle/temp/home/nala/.gradle/caches ~/.gradle/caches
 rm -rf ~/.gradle/temp
 
+
 echo "Switching to the app directory" | tee -a $LOG_FILE
 cd $APP_DIR
 if [ $? -ne 0 ];then
@@ -41,8 +42,6 @@ if [ $? -ne 0 ];then
    exit
 fi
 
-export OBFUSCATION=true
-export BUILD_OUTPUT_DIR=build-output
 
 echo "Cleaning project" | tee -a $LOG_FILE
 ./gradlew clean

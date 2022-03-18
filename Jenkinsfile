@@ -63,14 +63,14 @@ def injectCreds() {
     // during the cleanup() stage
     withCredentials([file(credentialsId: 'shoonya-dpc-key-jks-file', variable: 'SECRET_FILE')])
     {
-        sh "cp ${SECRET_FILE} secret.file"
+        sh "cp ${SECRET_FILE} app/secret.file"
     }
 
     // Copy the keystore.properties file for inclusion into the container. It already points to the secret file as
     // "storeFile=/application/secret.file"
     withCredentials([file(credentialsId: 'keystore.properties', variable: 'KS_PROPS_FILE')])
     {
-        sh "cp ${KS_PROPS_FILE} keystore.properties"
+        sh "cp ${KS_PROPS_FILE} app/keystore.properties"
     }
 
     withCredentials([[$class: 'UsernamePasswordMultiBinding',
@@ -83,7 +83,7 @@ def injectCreds() {
     }
 
     echo 'Secrets in place, listing files.'
-    sh 'ls -al'
+    sh 'ls -al app/'
 }
 
 def runBuildInDocker(String dpcBuildNumber, String releaseChannel) {
@@ -145,9 +145,21 @@ def runBuildInDocker(String dpcBuildNumber, String releaseChannel) {
 }
 
 def archiveFolders(String buildFolderName, String zipFileSuffix) {
-    def archiveFolderMap = [
-        "espersdksample/${buildFolderName}" : ['esper-sdk-sample' : ['outputs', 'reports', 'test-results']]
-        ]
+    def archiveFoldersList = ['outputs', 'reports', 'test-results']
+    def prefix = 'esper-sdk-sample'
+
+    // archive the build-status file--this is at the root of the downloaded code
+    archiveArtifacts artifacts: 'build_status.log', fingerprint: true, allowEmptyArchive: true
+
+    dir("app/${buildFolderName}") {
+        archiveFoldersList.each { archiveFolder ->
+            if (fileExists(archive_folder)) {
+                def zipFilename = "${prefix}-build-${archive_folder}${zipFileSuffix}.zip"
+                zip zipFile: zipFilename, dir: archive_folder
+                archiveArtifacts artifacts: zipFilename, fingerprint: true, allowEmptyArchive: true
+            }
+        }
+    }
 }
 
 def performPostBuildActivities() {
@@ -164,7 +176,7 @@ def performPostBuildActivities() {
     androidLint()
 
     // archive all interesting folders and attach it to this build
-    //archiveFolders('build-output', '')
+    archiveFolders('build', '')
 }
 
 def buildApps(String dpcBuildNumber, String releaseChannel) {
@@ -274,11 +286,12 @@ pipeline
                         def g_buildPathS3 = g_releaseChannel
                         sh "ls -al app/"
                         def buildPathS3 = "sampleapp/"+ g_buildPathS3
-                        def jsonData = readJSON file: 'app/build-output-pg-enabled/outputs/apk/release/output-metadata.json'
-                        g_dpcApkFile = "${pwd()}/app/build-output-pg-enabled/outputs/apk/release/app-release.apk"
+                        sh "ls -al app/app/build/outputs/apk/release/"
+                        def jsonData = readJSON file: 'app/app/build/outputs/apk/release/output-metadata.json'
+                        g_dpcApkFile = "${pwd()}/app/app/build/outputs/apk/release/app-release.apk"
                         g_dpcVersionCode = jsonData.elements[0].versionCode
                         g_dpcVersionName = jsonData.elements[0].versionName
-                        g_DpcApkFilename = "shoonya_dpc_v${g_dpcVersionCode}_${g_dpcVersionName}.apk"
+                        g_DpcApkFilename = "espersdk_sample_v${g_dpcVersionCode}_${g_dpcVersionName}.apk"
                         echo "DPC for has versionCode = ${g_dpcVersionCode} and versionName = ${g_dpcVersionName}"
                     }
                 }
