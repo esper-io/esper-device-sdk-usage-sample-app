@@ -280,8 +280,8 @@ pipeline
                 timestamps {
                     script {
                         // get a Sampleapp version number
-                        //def buildJob = build (job: 'DeviceBuilds/sampleapp-versions', propagate: true)
-                        dpcVersionBuildNumber = "2"
+                        def buildJob = build (job: 'DeviceBuilds/sampleapp-versions', propagate: true)
+                        dpcVersionBuildNumber = "${buildJob.number}"
                         echo "Version_name: ${dpcVersionBuildNumber}"
                         // let the builder library build the code and archive it
                         buildApps(dpcVersionBuildNumber,releaseChannel)
