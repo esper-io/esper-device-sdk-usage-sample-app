@@ -164,7 +164,7 @@ def archiveFolders(String buildFolderName, String zipFileSuffix) {
 
 def performPostBuildActivities() {
     // from the logs, make sure
-    def buildSuccessful = sh(script: "grep -Fxq 'Build successful' build_status.log", returnStatus: true) == 0
+    def buildSuccessful = sh(script: "grep -Fxq 'Build successful' app/build_status.log", returnStatus: true) == 0
     if (!buildSuccessful) {
         error('Build failed.')
     }
