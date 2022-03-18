@@ -19,21 +19,15 @@ import groovy.json.JsonSlurperClassic
     'staging' : 'beta',
     'master' : 'prod',
     'RelCandidate' : 'Experimental',
-    'SHN-15702-ci': 'alpha'
+    'SHN-15702-ci': 'test'
 ]
-@Field def branchToStacksTypeMap = [
-    'develop': 'development',
-    'staging': 'staging',
-    'master': 'production',
-    'RelCandidate': 'rel_candidate',
-    'SHN-15702-ci': 'development'
-]
+
 @Field def branchToFileName = [
     'develop': 'develop',
     'RelCandidate' : 'Experimental',
     'staging' : 'staging',
     'master' : 'master',
-    'SHN-15702-ci': 'development'
+    'SHN-15702-ci': 'test'
 ]
 
 @Field def slackMessageTitle = 'EsperSDK Sample Build Notification'
@@ -310,6 +304,9 @@ pipeline
                         dpcApkFilename = "espersdk_sample_v${dpcVersionCode}_${dpcVersionName}.apk"
                         echo "DPC for has versionCode = ${dpcVersionCode} and versionName = ${dpcVersionName}"
                         uploadtoS3(dpcApkFile, dpcApkFilename, shoonyDpcPublisherS3Bucket, buildPathS3, dpcVersionCode)
+                        def fileNameSuffix = branchToFileName[env.BRANCH_NAME] ?: 'test'
+                        finalDpcApkFilename = "espersdk_sample_latest_${fileNameSuffix}.apk"
+                        uploadtoS3(dpcApkFile, finalDpcApkFilename, shoonyDpcPublisherS3Bucket, buildPathS3, dpcVersionCode)
                     }
                 }
             }
