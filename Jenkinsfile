@@ -139,7 +139,7 @@ def runBuildInDocker(String dpcBuildNumber, String releaseChannel) {
                             -e LOCAL_USER_ID=${currUserId} \
                             -v /buildspace/gradle_dependency_cache:/gradle_dependency_cache \
                             -v ${pwd()}/jenkins/build_app.sh:/build_app.sh \
-                            -v ${pwd()}:/application '${dockerImageNameAndTag}' \
+                            -v ${pwd()}/app:/application '${dockerImageNameAndTag}' \
                             sh -c /build_app.sh"
     }
 }
