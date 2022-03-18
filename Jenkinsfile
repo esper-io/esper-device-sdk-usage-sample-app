@@ -61,17 +61,7 @@ def sendSlackMessage(titleText, messageText, messageColor, channelName) {
 def injectCreds() {
     // Copy the secret file locally for inclusion into the container. It will be cleaned up automatically
     // during the cleanup() stage
-    withCredentials([file(credentialsId: 'shoonya-dpc-key-jks-file', variable: 'SECRET_FILE')])
-    {
-        sh "cp ${SECRET_FILE} app/secret.file"
-    }
 
-    // Copy the keystore.properties file for inclusion into the container. It already points to the secret file as
-    // "storeFile=/application/secret.file"
-    withCredentials([file(credentialsId: 'keystore.properties', variable: 'KS_PROPS_FILE')])
-    {
-        sh "cp ${KS_PROPS_FILE} app/keystore.properties"
-    }
 
     withCredentials([[$class: 'UsernamePasswordMultiBinding',
         credentialsId: 'jfrog-artifactorycreds',
@@ -155,7 +145,7 @@ def archiveFolders(String buildFolderName, String zipFileSuffix) {
         archiveFoldersList.each { archiveFolder ->
             if (fileExists(archiveFolder)) {
                 def zipFilename = "${prefix}-build-${archiveFolder}${zipFileSuffix}.zip"
-                zip zipFile: zipFilename, dir: archive_folder
+                zip zipFile: zipFilename, dir: archiveFolder
                 archiveArtifacts artifacts: zipFilename, fingerprint: true, allowEmptyArchive: true
             }
         }
