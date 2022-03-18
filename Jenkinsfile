@@ -14,7 +14,7 @@ import net.sf.json.JSONArray
 import net.sf.json.JSONObject
 import groovy.json.JsonSlurperClassic
 
-@Field def g_BranchToReleaseTypeMap = [
+@Field def branchToReleaseTypeMap = [
     'develop' : 'alpha',
     'staging' : 'beta',
     'master' : 'prod',
@@ -43,7 +43,7 @@ import groovy.json.JsonSlurperClassic
 @Field def ShoonyDpcPublisherS3Bucket = 'shoonya-dpc'
 @Field def JenkinsCloudApiAccessCreds = 'jenkins_cloud_api_access_creds'
 @Field def releaseBranch = 'master'
-@Field def g_releaseChannel = ''
+@Field def releaseChannel = ''
 @Field def g_buildNumber = ''
 
 def sendSlackMessage(titleText, messageText, messageColor, channelName) {
@@ -149,12 +149,12 @@ def archiveFolders(String buildFolderName, String zipFileSuffix) {
     def prefix = 'esper-sdk-sample'
 
     // archive the build-status file--this is at the root of the downloaded code
-    archiveArtifacts artifacts: 'build_status.log', fingerprint: true, allowEmptyArchive: true
+    archiveArtifacts artifacts: 'app/build_status.log', fingerprint: true, allowEmptyArchive: true
 
-    dir("app/${buildFolderName}") {
+    dir("app/app/${buildFolderName}") {
         archiveFoldersList.each { archiveFolder ->
-            if (fileExists(archive_folder)) {
-                def zipFilename = "${prefix}-build-${archive_folder}${zipFileSuffix}.zip"
+            if (fileExists(archiveFolder)) {
+                def zipFilename = "${prefix}-build-${archiveFolder}${zipFileSuffix}.zip"
                 zip zipFile: zipFilename, dir: archive_folder
                 archiveArtifacts artifacts: zipFilename, fingerprint: true, allowEmptyArchive: true
             }
@@ -206,9 +206,9 @@ pipeline
                 script {
                     checkout(scm)
                     sh 'ls -la'
-                    g_releaseChannel = g_BranchToReleaseTypeMap[env.BRANCH_NAME] ?: 'alpha'
+                    releaseChannel = branchToReleaseTypeMap[env.BRANCH_NAME] ?: 'alpha'
                     time_stamp = new Date().format('yyyyMMddHHmm')
-                    g_buildNumber = [g_releaseChannel, time_stamp].join('-')
+                    g_buildNumber = [releaseChannel, time_stamp].join('-')
                     echo "Build_Number: ${g_buildNumber}"
                 }
             }
@@ -264,7 +264,7 @@ pipeline
                         g_DpcVersionBuildNumber = "2"
                         echo "Version_name: ${g_DpcVersionBuildNumber}"
                         // let the builder library build the code and archive it
-                        buildApps(g_DpcVersionBuildNumber,g_releaseChannel)
+                        buildApps(g_DpcVersionBuildNumber,releaseChannel)
                     }
                 }
             }
@@ -276,14 +276,14 @@ pipeline
                     expression {
                         env.BRANCH_NAME ==~ /(develop|RelCandidate|staging|SHN-15702-ci)/
                     }
-                    branch g_releaseBranch
+                    branch releaseBranch
                 }
             }
             steps {
                 timestamps {
                     script {
                         sh "ls -al"
-                        def g_buildPathS3 = g_releaseChannel
+                        def g_buildPathS3 = releaseChannel
                         sh "ls -al app/"
                         def buildPathS3 = "sampleapp/"+ g_buildPathS3
                         sh "ls -al app/app/build/outputs/apk/release/"
