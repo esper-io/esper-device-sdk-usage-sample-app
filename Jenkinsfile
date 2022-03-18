@@ -21,14 +21,14 @@ import groovy.json.JsonSlurperClassic
     'RelCandidate' : 'Experimental',
     'SHN-15702-ci': 'alpha'
 ]
-@Field def g_BranchToStacksTypeMap = [
+@Field def branchToStacksTypeMap = [
     'develop': 'development',
     'staging': 'staging',
     'master': 'production',
     'RelCandidate': 'rel_candidate',
     'SHN-15702-ci': 'development'
 ]
-@Field def g_branchToFileName = [
+@Field def branchToFileName = [
     'develop': 'develop',
     'RelCandidate' : 'Experimental',
     'staging' : 'staging',
@@ -36,15 +36,15 @@ import groovy.json.JsonSlurperClassic
     'SHN-15702-ci': 'development'
 ]
 
-@Field def slackMessageTitle = 'DPC Build Notification'
-@Field def slackMessageChannel = '#device-deployments'
-@Field def ShoonyDpcPublisherCredId = 'shoonya_jenkins_cloud_ui_build_user'
-@Field def ShoonyDpcPublisherAwsRegion = 'ap-south-1'
-@Field def ShoonyDpcPublisherS3Bucket = 'shoonya-dpc'
-@Field def JenkinsCloudApiAccessCreds = 'jenkins_cloud_api_access_creds'
+@Field def slackMessageTitle = 'EsperSDK Sample Build Notification'
+@Field def slackMessageChannel = '#kservcicdjobtest'
+@Field def shoonyDpcPublisherCredId = 'shoonya_jenkins_cloud_ui_build_user'
+@Field def shoonyDpcPublisherAwsRegion = 'ap-south-1'
+@Field def shoonyDpcPublisherS3Bucket = 'shoonya-dpc'
+@Field def jenkinsCloudApiAccessCreds = 'jenkins_cloud_api_access_creds'
 @Field def releaseBranch = 'master'
 @Field def releaseChannel = ''
-@Field def g_buildNumber = ''
+@Field def buildNumber = ''
 
 def sendSlackMessage(titleText, messageText, messageColor, channelName) {
     JSONArray attachments = new JSONArray()
@@ -61,19 +61,28 @@ def sendSlackMessage(titleText, messageText, messageColor, channelName) {
 def injectCreds() {
     // Copy the secret file locally for inclusion into the container. It will be cleaned up automatically
     // during the cleanup() stage
+    withCredentials([file(credentialsId: 'shoonya-dpc-key-jks-file', variable: 'SECRET_FILE')])
+    {
+        sh "cp ${SECRET_FILE} app/secret.file"
+    }
 
+    // Copy the keystore.properties file for inclusion into the container. It already points to the secret file as
+    // "storeFile=/application/secret.file"
+    withCredentials([file(credentialsId: 'keystore.properties', variable: 'KS_PROPS_FILE')])
+    {
+        sh "cp ${KS_PROPS_FILE} app/keystore.properties"
+    }
 
     withCredentials([[$class: 'UsernamePasswordMultiBinding',
         credentialsId: 'jfrog-artifactorycreds',
         usernameVariable: 'USERNAME',
         passwordVariable: 'PASSWORD']])
     {
-        g_arifactoryUsername = "${USERNAME}"
-        g_arifactoryPassword = "${PASSWORD}"
+        arifactoryUsername = "${USERNAME}"
+        arifactoryPassword = "${PASSWORD}"
     }
 
     echo 'Secrets in place, listing files.'
-    sh 'ls -al app/'
 }
 
 def runBuildInDocker(String dpcBuildNumber, String releaseChannel) {
@@ -123,8 +132,8 @@ def runBuildInDocker(String dpcBuildNumber, String releaseChannel) {
         sh "docker run --rm -e BUILD_NUMBER=${buildNumberAsInt} \
                             -e FOURDIGIT_BUILD_NUMBER=${fourDigitBuildNumber} \
                             -e PUBLISH_ESPER_DEVICE_SDK=${publishEsperDeviceSDK} \
-                            -e ARTIFACTORY_USERNAME=${g_arifactoryUsername} \
-                            -e ARTIFACTORY_PASSWORD=${g_arifactoryPassword} \
+                            -e ARTIFACTORY_USERNAME=${arifactoryUsername} \
+                            -e ARTIFACTORY_PASSWORD=${arifactoryPassword} \
                             -e RELEASE_CHANNEL=${releaseChannel} \
                             -e LOCAL_USER_ID=${currUserId} \
                             -v /buildspace/gradle_dependency_cache:/gradle_dependency_cache \
@@ -184,6 +193,28 @@ def buildApps(String dpcBuildNumber, String releaseChannel) {
     performPostBuildActivities()
 }
 
+def uploadtoS3(apkFile, apkFileName, bucket, s3Path, dpcVersionCode) {
+    withAWS(credentials:"${shoonyDpcPublisherCredId}", region:"${shoonyDpcPublisherAwsRegion}")
+    {
+        s3Upload(
+            acl:'PublicRead',
+            bucket:"${bucket}",
+            cacheControl:'cacheControl:\'public,max-age=86400\'',
+            file:"${apkFile}",
+            path:"${s3Path}/${apkFileName}",
+            pathStyleAccessEnabled: true
+        )
+        def postUploadMessage = "APK upload complete  \n ► APKName:`${apkFileName}` \n ► S3Path: ${s3Path} \n ► Version: ${dpcVersionCode}"
+        sendSlackMessage(
+            slackMessageTitle,
+            postUploadMessage,
+            'good',
+            slackMessageChannel
+        )
+    }
+    return 'success'
+}
+
 pipeline
 {
     agent {
@@ -195,11 +226,10 @@ pipeline
             steps {
                 script {
                     checkout(scm)
-                    sh 'ls -la'
                     releaseChannel = branchToReleaseTypeMap[env.BRANCH_NAME] ?: 'alpha'
                     time_stamp = new Date().format('yyyyMMddHHmm')
-                    g_buildNumber = [releaseChannel, time_stamp].join('-')
-                    echo "Build_Number: ${g_buildNumber}"
+                    buildNumber = [releaseChannel, time_stamp].join('-')
+                    echo "Build_Number: ${buildNumber}"
                 }
             }
         }
@@ -251,10 +281,10 @@ pipeline
                     script {
                         // get a Sampleapp version number
                         //def buildJob = build (job: 'DeviceBuilds/sampleapp-versions', propagate: true)
-                        g_DpcVersionBuildNumber = "2"
-                        echo "Version_name: ${g_DpcVersionBuildNumber}"
+                        dpcVersionBuildNumber = "2"
+                        echo "Version_name: ${dpcVersionBuildNumber}"
                         // let the builder library build the code and archive it
-                        buildApps(g_DpcVersionBuildNumber,releaseChannel)
+                        buildApps(dpcVersionBuildNumber,releaseChannel)
                     }
                 }
             }
@@ -272,20 +302,39 @@ pipeline
             steps {
                 timestamps {
                     script {
-                        sh "ls -al"
-                        def g_buildPathS3 = releaseChannel
-                        sh "ls -al app/"
-                        def buildPathS3 = "sampleapp/"+ g_buildPathS3
-                        sh "ls -al app/app/build/outputs/apk/release/"
+                        def buildPathS3 = "sampleapp/"+ releaseChannel
                         def jsonData = readJSON file: 'app/app/build/outputs/apk/release/output-metadata.json'
-                        g_dpcApkFile = "${pwd()}/app/app/build/outputs/apk/release/app-release.apk"
-                        g_dpcVersionCode = jsonData.elements[0].versionCode
-                        g_dpcVersionName = jsonData.elements[0].versionName
-                        g_DpcApkFilename = "espersdk_sample_v${g_dpcVersionCode}_${g_dpcVersionName}.apk"
-                        echo "DPC for has versionCode = ${g_dpcVersionCode} and versionName = ${g_dpcVersionName}"
+                        dpcApkFile = "${pwd()}/app/app/build/outputs/apk/release/app-release.apk"
+                        dpcVersionCode = jsonData.elements[0].versionCode
+                        dpcVersionName = jsonData.elements[0].versionName
+                        dpcApkFilename = "espersdk_sample_v${dpcVersionCode}_${dpcVersionName}.apk"
+                        echo "DPC for has versionCode = ${dpcVersionCode} and versionName = ${dpcVersionName}"
+                        uploadtoS3(dpcApkFile, dpcApkFilename, shoonyDpcPublisherS3Bucket, buildPathS3, dpcVersionCode)
                     }
                 }
             }
+        } //Stage Upload   
+    } //Stages
+
+    post {
+        failure {
+            script {
+                if (env.CHANGE_ID == null) {
+                    def messageText = "Failed Job Details:  \n ► Branch: `${env.BRANCH_NAME}`\n ► Job: `${env.JOB_NAME}`\n ► buildUrl: ${env.BUILD_URL}\n ► Commit: `${env.GIT_COMMIT}` \n "
+                    def messageColor = 'danger'
+                    sendSlackMessage(
+                        slackMessageTitle,
+                        messageText,
+                        messageColor,
+                        slackMessageChannel
+                    )
+                }
+            }
         }
-    }
-}
+        cleanup {
+            echo 'Cleaning workspace..'
+            cleanWs()
+            echo "Done. Exiting script"
+        }
+    } //post
+} //pipeline
