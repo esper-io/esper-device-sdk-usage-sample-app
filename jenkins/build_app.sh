@@ -16,7 +16,10 @@ tar -xzf /gradle_dependency_cache/dependency_cache.tar.gz
 popd
 mv ~/.gradle/temp/home/nala/.gradle/caches ~/.gradle/caches
 rm -rf ~/.gradle/temp
-
+### Remove after fixing install permission
+cp -R /usr/lib/android-sdk /application/androidsdk
+export ANDROID_SDK_DIR="/application/androidsdk"
+###
 
 echo "Switching to the app directory" | tee -a $LOG_FILE
 cd $APP_DIR
