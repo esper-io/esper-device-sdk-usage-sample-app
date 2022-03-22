@@ -147,4 +147,4 @@ def buildApps(String dpcBuildNumber, String releaseChannel) {
     // ensure build succeeded, and activities such as lint-checks.
     performPostBuildActivities()
 }
-
+return this
